@@ -1,0 +1,33 @@
+baseURL = "https://g00g1y5p4.github.io/"
+title = "g00g1y5p4's Blog"
+theme = "hugo-theme-bootstrap"
+copyright = "Copyright © 2018-{year} Akash Thota. All Rights Reserved."
+
+# Multilingual mode
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = true # If you use only one language comment this option
+
+# Pagination
+paginate = 5
+# paginatePath = "page"
+
+# Google analytics
+googleAnalytics = "UA-213801925-1"
+
+enableRobotsTXT = true
+enableEmoji = true
+
+# hasCJKLanguage = true # Turn on it if your content contains Chinese/Japanese/Korean Languages.
+
+pygmentsUseClasses = true
+
+[blackfriday]
+  hrefTargetBlank = true
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"
