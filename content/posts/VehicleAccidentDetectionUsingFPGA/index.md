@@ -35,6 +35,8 @@ We had used the DE10Nano FPGA board to program. DE10Nano FPGA Board has 2 differ
 
 2. HPS     --- Hard Processor System with a wealth of peripherals onboard for creating some interesting applications
 
+![images/de10nano.png](images/de10nano.png)
+
 The security of the vehicles can be achieved by using two
 methods on road and the other one is off road. On road
 means providing security from the accidents..So We are decided to Save lives from accidents. We are using ADXL sensor means Accelometer aka GyroScope, Magentometer to determine the vehicle position on the ground. 
@@ -325,6 +327,8 @@ In the above code, I power up the 107th gpio pin in DE10Nano when collision occu
 What😵? .. You just did accident detection, but how others can notice that accident has been happend to thier vehicle? Author is irritating bro😖 huhh? 
 
 Oooov oov O.. I just forget. Dont tease me bro😕,I will explain.
+![images/final.png](images/final.png)
+
 ##### NodeMCU 
 I have connected the 107th gpio output wire to NodeMCU to take input.
 So when the 107th gpio pin is powered up, then the NodeMCU read the it and sends the data to CLOUD.
@@ -452,9 +456,15 @@ void loop() {
   }
 }
 ```
+![images/node.png](images/node.png)
+
 [send_alarm.ino](files/send_alarm.ino)
 
 And I created an Android Application to request the cloud data and if the accident code is detected then the alarm will play sound continuously through that application even if we terminate the Application's background process.
+
+![images/detect.png](images/detect.png)
+
+If accident occured... Led will blink.
 
 [Vehicle-Accident-Detection-using-DE10-Nano](https://github.com/g00g1y5p4/Vehicle-Accident-Detection-using-DE10-Nano)
 
