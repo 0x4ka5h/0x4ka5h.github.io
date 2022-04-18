@@ -187,7 +187,7 @@ Yahooo! we are complete preprocessing the data for training GAN's.
 Source [dataPreprocessing.ipynb](files/data_preprocessing_for_restoration.ipynb)
 
 
-##check part-2 for GAN's implementation
+##check part-2 for GAN's implementatio
 ---
 
 ##### Thanks for reading! {align=center}
