@@ -21,4 +21,7 @@ images = []
 ### Introduction 
 Blog is Under working. 🤧🥱
 
+In India, most people lose their lives because of road accidents, and in road accidents, one of the main reasons is road infrastructure. So we detect potholes in different climate conditions and in various situations. Though we estimated their approx depth when they were filled with water or not (in night times also). 
+After we store the properties of potholes with GPS location. By storing this data we can give suggestions in maps to reach the destination safely. 
+
 ##### Thanks for reading! {align=center}
