@@ -12,7 +12,7 @@ categories = [
 tags = [
 ]
 series = []
-images = [""]
+images = ["images/image0.jpg"]
 +++
 
 
