@@ -1,5 +1,5 @@
 name = "Akash Thota"
-avatar = "images/me.jpg" # Avatar image. Default to "images/profile.webp".
+avatar = "images/me.png" # Avatar image. Default to "images/profile.webp".
 bio = "Intrested in integration Machine Learning with Computer Vision"
 company = "..."
 location = "India"
