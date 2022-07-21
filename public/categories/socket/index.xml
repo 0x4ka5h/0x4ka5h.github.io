@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Socket on 0x4ka5h&#39;s Blog</title>
+    <link>https://0x4ka5h.github.io/categories/socket/</link>
+    <description>Recent content in Socket on 0x4ka5h&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright>
+    <lastBuildDate>Mon, 20 Jan 2020 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/categories/socket/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Simple Video Call App with python Sockets</title>
+      <link>https://0x4ka5h.github.io/posts/simplevideocallapp/</link>
+      <pubDate>Mon, 20 Jan 2020 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/posts/simplevideocallapp/</guid>
+      <description>Introduction Hey mates😊. How are you? Hope you all are begin good.By the way, This is my first blog. Did you know my name 🥱? Well, I am Akash.
+Why we are here? To make some fun? 😕! No, But we&amp;rsquo;re here to learn something new in a funny way. Funny while learning😒? Yeah!.,
+By the way, What&amp;rsquo;s the new thing? Guess? 🤔🤔.. How to copy some code from StackOverflow easily using python?</description>
+    </item>
+    
+  </channel>
+</rss>
