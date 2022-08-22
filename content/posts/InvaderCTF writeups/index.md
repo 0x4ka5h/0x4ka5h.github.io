@@ -453,10 +453,195 @@ while j<43:
 ##### Binary
 
 ![chall_6](images/binary.png)
-```py
+
+Challange - [Binary](https://ctf.pwn.af/files/95d830ac96fb32f78f48e5f639e5ed4d/bin.zip?token=eyJ1c2VyX2lkIjo2LCJ0ZWFtX2lkIjpudWxsLCJmaWxlX2lkIjoyNH0.YwPP0Q.fCzKZ5kezYfOOAVxRCJS-23rvfY), here is the link for zip file.
+
+Once you download that file, you will find a gcc executable file, it containes the flag.
+
+Searching the flag in strings
+```sh
+$ strings binary
+.plt.sec
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.got
+..
+..
+
+# No flag here
+``` 
+
+So, I tried to recover assemnbly code from binary executable. I used ghidra. And decompiled the executable.
+
+```c
+undefined8 verifyFlag(char *param_1){
+  int iVar1;
+  size_t sVar2;
+  undefined8 uVar3;
+  long in_FS_OFFSET;
+  uint local_d4;
+  int local_d0;
+  int local_cc;
+  uint local_c8 [46];
+  long local_10;
+  
+  local_10 = *(long *)(in_FS_OFFSET + 0x28);
+  sVar2 = strlen(param_1);
+  if (sVar2 == 0x37) {
+    iVar1 = strncmp(param_1,"InvaderCTF{",0xb);
+    if (iVar1 == 0) {
+      local_c8[0] = 0x37b;
+      local_c8[1] = 0x352;
+      local_c8[2] = 0x38c;
+      local_c8[3] = 0x39f;
+      local_c8[4] = 0x395;
+      local_c8[5] = 0x3c8;
+      local_c8[6] = 0x3bf;
+      local_c8[7] = 0x3ca;
+      local_c8[8] = 0x39a;
+      local_c8[9] = 0x38f;
+      local_c8[10] = 0x373;
+      local_c8[11] = 0x3bd;
+      local_c8[12] = 0x3b2;
+      local_c8[13] = 0x3c3;
+      local_c8[14] = 0x385;
+      local_c8[15] = 0x3b7;
+      local_c8[16] = 0x3bd;
+      local_c8[17] = 0x37b;
+      local_c8[18] = 0x38a;
+      local_c8[19] = 0x37a;
+      local_c8[20] = 0x3bc;
+      local_c8[21] = 0x3a7;
+      local_c8[22] = 0x3a1;
+      local_c8[23] = 0x373;
+      local_c8[24] = 0x37d;
+      local_c8[25] = 0x3ab;
+      local_c8[26] = 0x3ba;
+      local_c8[27] = 0x3bb;
+      local_c8[28] = 0x3b3;
+      local_c8[29] = 0x3b6;
+      local_c8[30] = 0x3e4;
+      local_c8[31] = 0x3ef;
+      local_c8[32] = 0x3bb;
+      local_c8[33] = 0x3bd;
+      local_c8[34] = 0x3f0;
+      local_c8[35] = 0x3f0;
+      local_c8[36] = 0x3eb;
+      local_c8[37] = 0x3e9;
+      local_c8[38] = 0x3ed;
+      local_c8[39] = 0x3ba;
+      local_c8[40] = 0x3f7;
+      local_c8[41] = 0x437;
+      local_c8[42] = 0x3fc;
+      local_c8[43] = 0x3eb;
+      for (local_d0 = 0; local_d0 < 0x2c; local_d0 = local_d0 + 1) {
+        local_d4 = 0;
+        for (local_cc = 0; local_cc < 0xc; local_cc = local_cc + 1) {
+          local_d4 = local_d4 + (int)param_1[local_cc + local_d0];
+        }
+        if ((local_d4 ^ 0x7ff) != local_c8[local_d0]) {
+          uVar3 = 0;
+          goto LAB_00101454;
+        }
+      }
+      uVar3 = 1;
+    }
+    else {
+      uVar3 = 0;
+    }
+  }
+  else {
+    uVar3 = 0;
+  }
+LAB_00101454:
+  if (local_10 != *(long *)(in_FS_OFFSET + 0x28)) {
+                    /* WARNING: Subroutine does not return */
+    __stack_chk_fail();
+  }
+  return uVar3;
+}
+
 ```
 
-### CRYPt
+I'm able to reverse the code, and get flag back using below code.
 
+```py
+import string
+
+c8 = [0x37b,0x352,0x38c,0x39f,0x395,0x3c8,0x3bf,0x3ca,0x39a,0x38f,0x373,0x3bd,0x3b2,0x3c3,0x385,0x3b7, 0x3bd,0x37b,0x38a,0x37a,0x3bc,0x3a7,0x3a1,0x373,0x37d,0x3ab,0x3ba,0x3bb,0x3b3,0x3b6,0x3e4,0x3ef,0x3bb,0x3bd,0x3f0,0x3f0,0x3eb,0x3e9,0x3ed,0x3ba,0x3f7,0x437,0x3fc,0x3eb]
+
+FLAG = "InvaderCTF{" #remaining
+done = 0
+for d0 in range(0x2c):
+	d4 = 0
+	for cc in range(0xc - 1):
+		d4 = d4 + ord(FLAG[cc+d0])
+
+	s = c8[done]^0x7ff
+	FLAG+=str(chr(s-d4))
+	done+=1
+
+print(FLAG)
+
+# InvaderCTF{cr4ck1ngs_b1nar1es_w1th_d3c0mp1ler5_i5_c00l}
+```
+### CRYPTO
+
+##### Common_Modulus
+
+![chall_7](images/cm.png)
+
+Challange - [common_modulus](https://ctf.pwn.af/files/6763818d1a89636488f7d5f834d05e0a/common_modulus.zip?token=eyJ1c2VyX2lkIjo2LCJ0ZWFtX2lkIjpudWxsLCJmaWxlX2lkIjoxNn0.YwPVEA.FhWJGxtjn8oRg9w0k5AVM5pQtd8) here is the link to downlaod the zip.
+
+Quick summary of RSA
+
+ct = m**e % N
+
+We have a message (the flag) encrypted with the same N
+
+but with two different e. As the name suggests the solution to this problem is a common modulus attack
+
+The idea of the attack is that if we know
+
+    m**e1 % N
+
+	m**e2 % N
+
+GCD(e1,e2)=1
+
+then we can recover m. And e1 and e2 are two random generated primes.
+```sage
+
+n = 11982945131022410542351081395449872615892579857707579658716659690935488669385262821057859182557738914580246000223393286594124225383866984597532935421878496300855873841201081561776719850279196185513497651311088240409358040299378330842236508619359647972763016690363235765860969655129269784424956130539800284778318098141912923725687592311652722505056107470370398021165270753993680221146964650298810348339426550121843506831513763524799788245715184019272818769688806186156054217173423142297185080827697102885478690188900539745266957938792259348667098941846582939290347898221569129727818304319228531810884419349788595299183
+e1 = 1432834983003528423789566679766
+e2 = 2379308237310255832902020443526
+c1 = 10689309714150831372003282520258034721869267911572516423408248565049962108650099748793151534577215410589895845939174468496094911105822340567352621464826482784496348432260039948367408369277304473142781582593382249759117725426180831722441987089651228047819100128903524486005240635239107861739718852670683772477033147265282652735461836031051746173537294339800736436758373421135499142186805931851613817214123606130652548146050084102387221849254771049043101744791081688090961965211538682034166530987653637019819142642682927570692406882796783114872064728299928706994667553634162223654351719854271521012272876869577548029865
+c2 = 10108112864771204039110360647151162379625435403389064742046377050800935678884417470071380911451172735126940164631419702014060618271946963698795724980506620687308126757038560340598588393457958478150419444430669593694549750182242922247396011389187919036956934428645928391159497083109718312975799586599853937652754710111738660741391329300491640624992257712646153846113376883043637423386066176238663086142253925553012932883285101598565990266200395298234059134450705194609356310121298248102541581987639348408092513592224044341173092657291900970886956196149689937412107716004555806327078173298630211025335704973121968612105
+
+e1 = e1//2
+e2 = e2//2
+
+def solve(e1, e2, n, c1, c2):
+	d, x, y = xgcd(e1, e2)
+	m = (pow(c1, x, n) * pow(c2, y, n)) % n
+	return m
+
+message_2 = solve(e1,e2,n,c1,c2)
+message = isqrt(message_2)
+```
+```py
+from Crypto.Utils.number import long_to_bytes
+_ = long_to_bytes(message)
+
+print(_)
+
+# InvaderCTF{common_modulus_the_attack_name_is_common_modulus}
+```
 
 ##### Thanks for reading! {align=center}
