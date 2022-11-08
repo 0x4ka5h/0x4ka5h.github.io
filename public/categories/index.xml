@@ -6,7 +6,34 @@
     <description>Recent content in Categories on 0x4ka5h&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright>
-    <lastBuildDate>Fri, 31 Dec 2021 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 17 Aug 2022 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CTF</title>
+      <link>https://0x4ka5h.github.io/categories/ctf/</link>
+      <pubDate>Wed, 17 Aug 2022 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/categories/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>https://0x4ka5h.github.io/categories/security/</link>
+      <pubDate>Wed, 17 Aug 2022 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/categories/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WriteUps</title>
+      <link>https://0x4ka5h.github.io/categories/writeups/</link>
+      <pubDate>Wed, 17 Aug 2022 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/categories/writeups/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>FPGA</title>
       <link>https://0x4ka5h.github.io/categories/fpga/</link>
