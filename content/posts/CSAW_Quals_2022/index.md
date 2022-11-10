@@ -1,7 +1,7 @@
 +++
 title = "CSAW Quals 2022"
 description = " My approch towards the CTF challanges "
-date = 2022-08-17T07:34:48+08:30
+date = 2022-09-21T07:34:48+08:30
 featured = false
 draft = false
 comment = false
@@ -23,7 +23,7 @@ I solved 2 Misc challenges – catTheFlag, ezMaze.
 
 
 <p align="center" width="100%">
-    <h1>Well,one moment please. We can catch up after CSAW'22 finals.</h1> 
+    <h1>Well,one moment please. We should catch up after CSAW finals.</h1> 
 </p>
 
 
