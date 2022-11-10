@@ -23,7 +23,7 @@ I solved 2 Misc challenges – catTheFlag, ezMaze.
 
 
 <p align="center" width="100%">
-    <h1>Well,one moment please. We should catch up after CSAW finals.</h1> 
+    <h1>Well,one moment please. We can catch up after CSAW'22 finals.</h1> 
 </p>
 
 
