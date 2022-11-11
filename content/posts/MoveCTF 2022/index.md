@@ -22,11 +22,7 @@ images = ["files/logo2.png"]
 <br/>
 <br/>
 
-
-Sup?!
-
-
-Hey, there! long time no see ah? I forgot to tell you that now I'm currently learning blokchain and its security. Recently, I tried to compete in MoveCTF which was organized by MoveBit, Ottersec and ChainFlag, sponsored by Mysten Labs(Sui). From the name we can understand that this ctf is conducted on Move langauge and the platform was Sui blockchain. 
+Recently, I tried to compete in MoveCTF which was organized by MoveBit, Ottersec and ChainFlag, sponsored by Mysten Labs(Sui). From the name we can understand that this ctf is conducted on Move langauge and the platform was Sui blockchain. 
 
 I'm actually very new to Move (known for 3 days before CTF). Meanwhile, I'm learning Aptos, later shockingly known that this ctf was based on sui blockchain. Literally, I've been hurried up and learn sui in the period of ctf and try to compete. However, I tried to complete 3 out 4 ctf problems. 
 
