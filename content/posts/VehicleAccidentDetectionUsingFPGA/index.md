@@ -342,7 +342,7 @@ So when the 107th gpio pin is powered up, then the NodeMCU read the it and sends
 
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883
-#define AIO_USERNAME    "g00g1y5p4"
+#define AIO_USERNAME    "0x4ka5h"
 #define AIO_KEY         "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  // Obtained from account info on io.adafruit.com          
 int i=0;
 int s=0;
