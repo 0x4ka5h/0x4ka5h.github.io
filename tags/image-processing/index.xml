@@ -1,3 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Image Processing on 0x4ka5h's Blog</title><link>https://0x4ka5h.github.io/tags/image-processing/</link><description>Recent content in Image Processing on 0x4ka5h's Blog</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright><lastBuildDate>Sat, 10 Oct 2020 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/tags/image-processing/index.xml" rel="self" type="application/rss+xml"/><item><title>Driver Drowsiness Detection</title><link>https://0x4ka5h.github.io/posts/driverdrowsinessdetection/</link><pubDate>Sat, 10 Oct 2020 07:34:48 +0830</pubDate><guid>https://0x4ka5h.github.io/posts/driverdrowsinessdetection/</guid><description>Hi guys,How are you? I hope you guys are fine and missing my blogs so much.. Hah!!
-This time I coming with a new topic mostly based on Image processing and ComputerVision technologies. Its sounds little bit different than previous blog, isn&amp;rsquo;t it? In this blog, we address a drowsy driver alert system that has been developed using such a technique in which the Video Stream Processing (VSP) is analyzed by eye blink concept through an Eye Aspect Ratio (EAR) and Euclidean distance of the eye.</description></item><item><title>Image Restoration Using GAN's Part-1</title><link>https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/</link><pubDate>Sun, 06 Sep 2020 07:34:48 +0830</pubDate><guid>https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/</guid><description>What is GAN&amp;rsquo;s? Generative Adversarial Networks GAN&amp;rsquo;s are one of the most interesting ideas in computer science today. Two models are trained simultaneously by an adversarial process. A generator learns to create images that look real, while a discriminator learns to tell real images apart from fakes. Case: I have read that, in most of the cases Doctors may face issues while they are making decisions over CT scanned Images because of Gaussian Noise and making electronic Noise (unwanted disturbance in a signal which is reflected in output).</description></item><item><title>Image Restoration Using GAN's Part-2</title><link>https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/</link><pubDate>Sun, 06 Sep 2020 07:34:48 +0830</pubDate><guid>https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/</guid><description>Lets continue the part-1 ^_^ ;).., We already know that what GAN&amp;rsquo;s are and why they are used. Well, not really. GANs belong to implicit learning methods. In explicit learning models, the model learns its weights directly from the data. whereas in implicit learning, the model learns without the data directly passing through the network. so it is reinforcement learning? Not really Hah..,!
-As of now,we already discussed that GAN&amp;rsquo;s have two model, and two models are trained simultaneously by an adversarial process.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Image Processing on 0x4ka5h&#39;s Blog</title>
+    <link>https://0x4ka5h.github.io/tags/image-processing/</link>
+    <description>Recent content in Image Processing on 0x4ka5h&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright>
+    <lastBuildDate>Sat, 10 Oct 2020 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/tags/image-processing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Driver Drowsiness Detection</title>
+      <link>https://0x4ka5h.github.io/posts/driverdrowsinessdetection/</link>
+      <pubDate>Sat, 10 Oct 2020 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/posts/driverdrowsinessdetection/</guid>
+      <description>Hi guys,How are you? I hope you guys are fine and missing my blogs so much.. Hah!!
+This time I coming with a new topic mostly based on Image processing and ComputerVision technologies. Its sounds little bit different than previous blog, isn&amp;rsquo;t it? In this blog, we address a drowsy driver alert system that has been developed using such a technique in which the Video Stream Processing (VSP) is analyzed by eye blink concept through an Eye Aspect Ratio (EAR) and Euclidean distance of the eye.</description>
+    </item>
+    
+    <item>
+      <title>Image Restoration Using GAN&#39;s Part-1</title>
+      <link>https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/</link>
+      <pubDate>Sun, 06 Sep 2020 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/</guid>
+      <description>What is GAN&amp;rsquo;s? Generative Adversarial Networks GAN&amp;rsquo;s are one of the most interesting ideas in computer science today. Two models are trained simultaneously by an adversarial process. A generator learns to create images that look real, while a discriminator learns to tell real images apart from fakes. Case: I have read that, in most of the cases Doctors may face issues while they are making decisions over CT scanned Images because of Gaussian Noise and making electronic Noise (unwanted disturbance in a signal which is reflected in output).</description>
+    </item>
+    
+    <item>
+      <title>Image Restoration Using GAN&#39;s Part-2</title>
+      <link>https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/</link>
+      <pubDate>Sun, 06 Sep 2020 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/</guid>
+      <description>Lets continue the part-1 ^_^ ;).., We already know that what GAN&amp;rsquo;s are and why they are used. Well, not really. GANs belong to implicit learning methods. In explicit learning models, the model learns its weights directly from the data. whereas in implicit learning, the model learns without the data directly passing through the network. so it is reinforcement learning? Not really Hah..,!
+As of now,we already discussed that GAN&amp;rsquo;s have two model, and two models are trained simultaneously by an adversarial process.</description>
+    </item>
+    
+  </channel>
+</rss>

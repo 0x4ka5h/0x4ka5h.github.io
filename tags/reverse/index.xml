@@ -1,3 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reverse on 0x4ka5h's Blog</title><link>https://0x4ka5h.github.io/tags/reverse/</link><description>Recent content in Reverse on 0x4ka5h's Blog</description><generator>Hugo -- gohugo.io</generator><copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright><lastBuildDate>Wed, 17 Aug 2022 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/tags/reverse/index.xml" rel="self" type="application/rss+xml"/><item><title>InvaderCTF writeups</title><link>https://0x4ka5h.github.io/posts/invaderctf-writeups/</link><pubDate>Wed, 17 Aug 2022 07:34:48 +0830</pubDate><guid>https://0x4ka5h.github.io/posts/invaderctf-writeups/</guid><description>Introduction Hello mate, Sup?
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reverse on 0x4ka5h&#39;s Blog</title>
+    <link>https://0x4ka5h.github.io/tags/reverse/</link>
+    <description>Recent content in Reverse on 0x4ka5h&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>Copyright © 2018-{year} Akash Thota. All Rights Reserved.</copyright>
+    <lastBuildDate>Wed, 17 Aug 2022 07:34:48 +0830</lastBuildDate><atom:link href="https://0x4ka5h.github.io/tags/reverse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>InvaderCTF writeups</title>
+      <link>https://0x4ka5h.github.io/posts/invaderctf-writeups/</link>
+      <pubDate>Wed, 17 Aug 2022 07:34:48 +0830</pubDate>
+      
+      <guid>https://0x4ka5h.github.io/posts/invaderctf-writeups/</guid>
+      <description>Introduction Hello mate, Sup?
 Long time, no see ah? Don&amp;rsquo;t worry, I&amp;rsquo;m coming. Here we go, Our new blog but this time with a different topic 🙃. Me, entering the world of CTFs and Application security. Playing “InvaderCTF” is my first step toward the path that I have chosen. And, at the end of the day, it’s a 🥳BANG! I&amp;rsquo;m able to secure my position in the Top 3.
-Actually, I&amp;rsquo;m studying at RGUKT.</description></item></channel></rss>
+Actually, I&amp;rsquo;m studying at RGUKT.</description>
+    </item>
+    
+  </channel>
+</rss>

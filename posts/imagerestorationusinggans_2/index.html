@@ -1,311 +1,629 @@
-<!doctype html><html lang=en data-mode=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Image Restoration Using GAN's Part-2 | 0x4ka5h's Blog</title><link rel=apple-touch-icon href=https://0x4ka5h.github.io/images/favicons/apple-touch-icon.png sizes=180x180><link rel=icon href=https://0x4ka5h.github.io/images/favicons/favicon-32x32.png sizes=32x32 type=image/png><link rel=icon href=https://0x4ka5h.github.io/images/favicons/favicon-16x16.png sizes=16x16 type=image/png><link rel=manifest href=https://0x4ka5h.github.io/images/favicons/manifest.json><link rel=icon href=https://0x4ka5h.github.io/images/favicons/favicon.ico><meta name=keywords content><meta name=description content="Image Restoration with GAN's for medical field problems"><meta itemprop=name content="Image Restoration Using GAN's Part-2"><meta itemprop=description content="Image Restoration with GAN's for medical field problems"><meta itemprop=datePublished content="2020-09-06T07:34:48+08:30"><meta itemprop=dateModified content="2020-09-06T07:34:48+08:30"><meta itemprop=wordCount content="1281"><meta itemprop=image content="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png"><meta itemprop=keywords content="Machine Learning,Deep Learning,Image Processing,"><meta property="og:title" content="Image Restoration Using GAN's Part-2"><meta property="og:description" content="Image Restoration with GAN's for medical field problems"><meta property="og:type" content="article"><meta property="og:url" content="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/"><meta property="og:image" content="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-09-06T07:34:48+08:30"><meta property="article:modified_time" content="2020-09-06T07:34:48+08:30"><meta name=twitter:card content="summary"><meta name=twitter:image content="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png"><meta name=twitter:title content="Image Restoration Using GAN's Part-2"><meta name=twitter:description content="Image Restoration with GAN's for medical field problems"><meta name=twitter:site content="@0x4ka5h"><link rel=preload href=https://0x4ka5h.github.io/css/bundle.min.fcd024e77e7ca8dc30926e1b5389582b45bdb44482ee20d1ae3aae2c00de9817.css integrity="sha256-/NAk5358qNwwkm4bU4lYK0W9tESC7iDRrjquLADemBc=" crossorigin=anonymous as=style onload='this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://0x4ka5h.github.io/css/bundle.min.fcd024e77e7ca8dc30926e1b5389582b45bdb44482ee20d1ae3aae2c00de9817.css integrity="sha256-/NAk5358qNwwkm4bU4lYK0W9tESC7iDRrjquLADemBc=" crossorigin=anonymous></noscript><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Consolas" type=text/css media=all referrerpolicy=no-referrer><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Fira+Code" type=text/css media=all><style>body{font-family:consolas}code{font-family:fira code}code{tab-size:4}</style></head><body><script src=https://0x4ka5h.github.io/js/bootstrap.min.062c2e66b557cb779d59cedff7e0cc76e84beb665a1076e474e87d940be44245.js integrity="sha256-BiwuZrVXy3edWc7f9+DMduhL62ZaEHbkdOh9lAvkQkU=" crossorigin=anonymous></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top"><div class=container><button class=navbar-toggler type=button data-bs-toggle=collapse data-bs-target=#navbarSupportedContent aria-controls=navbarSupportedContent aria-expanded=false aria-label="Toggle navigation">
-<i class="fas fa-bars"></i>
-</button><a class="navbar-brand me-3" href=https://0x4ka5h.github.io/>0x4ka5h's Blog</a>
-<button class=navbar-social-share type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSocialShare aria-controls=offcanvasSocialShare aria-label="Toggle social share">
-<i class="fas fa-share-alt"></i></button><div class="offcanvas offcanvas-bottom surface" tabindex=-1 id=offcanvasSocialShare aria-labelledby=offcanvasSocialShare><div class=offcanvas-header><h3 class=offcanvas-title>Share</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i></button></div><div class=offcanvas-body><a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button" target=_blank href="https://twitter.com/intent/tweet?title=Image%20Restoration%20Using%20GAN%27s%20Part-2&url=https%3a%2f%2f0x4ka5h.github.io%2fposts%2fimagerestorationusinggans_2%2f"><i class="fab fa-fw fa-twitter"></i> Twitter</a>
-<a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button" target=_blank href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2f0x4ka5h.github.io%2fposts%2fimagerestorationusinggans_2%2f"><i class="fab fa-fw fa-facebook-f"></i> Facebook</a></div></div><button class=navbar-settings type=button data-bs-toggle=offcanvas data-bs-target=#offcanvasSettings aria-controls=offcanvasSettings aria-label="Toggle settings">
-<i class="fas fa-ellipsis-v"></i></button><div class="offcanvas offcanvas-end surface h-100" tabindex=-1 id=offcanvasSettings aria-labelledby=offcanvasSettings><div class=offcanvas-header><h3 class=offcanvas-title>Settings</h3><button type=button class="btn btn-sm btn-outline-primary" data-bs-dismiss=offcanvas aria-label=Close>
-<i class="fas fa-times"></i></button></div><div class=offcanvas-body><section class=setting><form class="font-size-switcher-form row"><div class=col-auto><label for=fontSize class=form-label><i class="fas fa-fw fa-font"></i> Font Size</label></div><div class="col-auto ms-auto"><input type=range class=form-range min=-2 max=2 id=fontSize></div></form></section><section class="setting palettes"><form class=row><div class=col-auto><label><i class="fas fa-fw fa-palette"></i> Palette</label></div><div class="col-auto ms-auto"><a id=btnPalette class="btn btn-sm btn-outline-primary" role=button aria-label=palettePicker><i class="fas fa-eye-dropper"></i></a></div></form><div class="mt-2 d-flex visually-hidden" id=palettePicker><button type=button id=palette-blue aria-label=Blue class="btn btn-sm palette" data-palette=blue>
-</button><button type=button id=palette-blue-gray aria-label="Blue Gray" class="btn btn-sm palette" data-palette=blue-gray>
-</button><button type=button id=palette-brown aria-label=Brown class="btn btn-sm palette" data-palette=brown>
-</button><button type=button id=palette-cyan aria-label=Cyan class="btn btn-sm palette" data-palette=cyan>
-</button><button type=button id=palette-green aria-label=Green class="btn btn-sm palette" data-palette=green>
-</button><button type=button id=palette-indigo aria-label=Indigo class="btn btn-sm palette" data-palette=indigo>
-</button><button type=button id=palette-orange aria-label=Orange class="btn btn-sm palette" data-palette=orange>
-</button><button type=button id=palette-pink aria-label=Pink class="btn btn-sm palette" data-palette=pink>
-</button><button type=button id=palette-purple aria-label=Purple class="btn btn-sm palette" data-palette=purple>
-</button><button type=button id=palette-red aria-label=Red class="btn btn-sm palette" data-palette=red>
-</button><button type=button id=palette-teal aria-label=Teal class="btn btn-sm palette" data-palette=teal>
-</button><button type=button id=palette-yellow aria-label=Yellow class="btn btn-sm palette" data-palette=yellow></button></div></section></div></div><div class="collapse navbar-collapse" tabindex=-1 id=navbarSupportedContent aria-labelledby=navbarSupportedContent><ul class="navbar-nav ms-auto"><li class=nav-item><a class=nav-link href=https://0x4ka5h.github.io/archives/><i class="fas fa-fw fa-file-archive"></i>Archives</a></li><li class=nav-item><a class=nav-link href=https://0x4ka5h.github.io/categories/><i class="fas fa-fw fa-folder"></i>Categories</a></li><li class=nav-item><a class=nav-link href=https://0x4ka5h.github.io/tags/><i class="fas fa-fw fa-tags"></i>Tags</a></li><li class=nav-item><a class=nav-link href=https://0x4ka5h.github.io/series/><i class="fas fa-fw fa-columns"></i>Series</a></li></ul></div></div></nav></header><main role=main class=container><div class="row content"><div class=col-lg-8><div class=container><nav class="row card component" aria-label=breadcrumb><div class=card-body><ol class=breadcrumb><li class=breadcrumb-item><a href=https://0x4ka5h.github.io/>Home</a></li><li class=breadcrumb-item><a href=https://0x4ka5h.github.io/posts/>Posts</a></li><li class="breadcrumb-item active">Image Restoration Using GAN's Part-2</li></ol></div></nav><article class="row card component mb-4 post"><div class=post-panel-wrapper><div class="d-flex flex-column component rounded post-panel"><a id=sidebarToggler class="action d-none d-lg-block" role=button><i class="fas fa-fw fa-expand-alt" data-fa-transform=rotate-45></i></a></div></div><div class=card-body><h1 class="card-title my-3">Image Restoration Using GAN's Part-2</h1><div class=post-meta><span class=post-date title="created on"><i class="fas fa-fw fa-calendar-alt"></i>Sep 6, 2020
-</span><span class=post-reading-time title="reading time"><i class="fas fa-fw fa-coffee"></i>7 min read
-</span><a href=https://0x4ka5h.github.io/categories/gans/ class="badge rounded-pill text-white bg-primary post-taxonomy">GAN's</a><a href=https://0x4ka5h.github.io/tags/machine-learning/ class="badge rounded-pill text-white bg-primary post-taxonomy">Machine Learning</a><a href=https://0x4ka5h.github.io/tags/deep-learning/ class="badge rounded-pill text-white bg-primary post-taxonomy">Deep Learning</a><a href=https://0x4ka5h.github.io/tags/image-processing/ class="badge rounded-pill text-white bg-primary post-taxonomy">Image Processing</a></div><div class="post-content mb-3"><h2 id=lets-continue-the-part-1-_->Lets continue the part-1 ^_^ ;)..,</h2><p>We already know that what GAN&rsquo;s are and why they are used. Well, not really. GANs belong to implicit learning methods. In explicit learning models, the model learns its weights directly from the data. whereas in implicit learning, the model learns without the data directly passing through the network. so it is reinforcement learning? Not really Hah..,!</p><p>As of now,we already discussed that GAN&rsquo;s have two model, and two models are trained simultaneously by an adversarial process. A generator learns to create images that look real, while a discriminator learns to tell real images apart from fakes. See what happens in this contest of discrimination and generation, we may think while the generator is almost discriminated, so it was trained heavely but the thing is the discriminator also trained harldy to discriminate images for small mistakes also.This is why GAN&rsquo;s became intresting in Neural Networks.</p><p><img class="img-fluid mx-auto d-block" alt=images/home.jpg src=https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/home.jpg loading=lazy width=1050 height=520></p><h4 id=load-required-libraries>Load required libraries</h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=kn>from</span> <span class=nn>tensorflow</span> <span class=kn>import</span> <span class=n>keras</span>
-</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>tensorflow</span> <span class=k>as</span> <span class=nn>tf</span>
-</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>numpy</span> <span class=k>as</span> <span class=nn>np</span>
-</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>tensorflow.keras.preprocessing</span> <span class=kn>import</span> <span class=n>image_dataset_from_directory</span>
-</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>IPython</span> <span class=kn>import</span> <span class=n>display</span>
-</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>os</span><span class=o>,</span><span class=nn>time</span>
-</span></span></code></pre></div><h4 id=loading-pickled-data-into-numpy-array>Loading pickled data into NumPy array</h4><p>Load the Preprocessed Data into NumPy array which is created in Part-1. Pickled data contains preprocessed image data in array format.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pickle</span>
-</span></span><span class=line><span class=cl><span class=c1># Read from file.</span>
-</span></span><span class=line><span class=cl><span class=n>file</span> <span class=o>=</span> <span class=nb>open</span><span class=p>(</span><span class=s2>&#34;/../../data.pkl&#34;</span><span class=p>,</span> <span class=s2>&#34;rb&#34;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl><span class=n>x_train</span> <span class=o>=</span> <span class=n>pickle</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>x_train_noisy</span> <span class=o>=</span> <span class=n>pickle</span><span class=o>.</span><span class=n>load</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>file</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
-</span></span></code></pre></div><h4 id=spliting-data-into-train-and-test-data>spliting Data into Train and test data</h4><p>The train_test_split function allows you to break a dataset with ease while pursuing an ideal model. Also, keep in mind that your model should not be overfitting or underfitting.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=kn>from</span> <span class=nn>sklearn.model_selection</span> <span class=kn>import</span> <span class=n>train_test_split</span>
-</span></span><span class=line><span class=cl><span class=n>x_train_</span><span class=p>,</span> <span class=n>x_test</span><span class=p>,</span> <span class=n>x_train_noisy_</span><span class=p>,</span> <span class=n>x_test_noisy</span> <span class=o>=</span> <span class=n>train_test_split</span><span class=p>(</span><span class=n>x_train</span><span class=p>,</span> <span class=n>x_train_noisy</span><span class=p>,</span><span class=n>shuffle</span><span class=o>=</span><span class=mi>128</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>BUFFER_SIZE</span> <span class=o>=</span> <span class=mi>400</span>
-</span></span><span class=line><span class=cl><span class=n>BATCH_SIZE</span> <span class=o>=</span> <span class=mi>64</span>
-</span></span><span class=line><span class=cl><span class=n>IMG_WIDTH</span> <span class=o>=</span> <span class=mi>256</span>
-</span></span><span class=line><span class=cl><span class=n>IMG_HEIGHT</span> <span class=o>=</span> <span class=mi>256</span>
-</span></span><span class=line><span class=cl><span class=n>EPOCHS</span> <span class=o>=</span> <span class=mi>150</span>
-</span></span><span class=line><span class=cl><span class=n>OUTPUT_CHANNELS</span> <span class=o>=</span> <span class=mi>3</span>
-</span></span></code></pre></div><h2 id=implementation-of-gans>Implementation of GAN&rsquo;s</h2><h5 id=upsampling-and-downsampling-of-an-image>Upsampling and Downsampling of an Image</h5><p>Downsampling is the process of reducing the sampling rate of a signal. Downsample reduces the sampling rate of the input AOs by an integer factor by picking up one out of N samples. Note that no anti-aliasing filter is applied to the original data.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>downsample</span><span class=p>(</span><span class=n>filters</span><span class=p>,</span> <span class=n>size</span><span class=p>,</span> <span class=n>apply_batchnorm</span><span class=o>=</span><span class=kc>True</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=n>initializer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>random_normal_initializer</span><span class=p>(</span><span class=mf>0.</span><span class=p>,</span> <span class=mf>0.02</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>result</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>Sequential</span><span class=p>()</span>
-</span></span><span class=line><span class=cl>  <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>      <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Conv2D</span><span class=p>(</span><span class=n>filters</span><span class=p>,</span> <span class=n>size</span><span class=p>,</span> <span class=n>strides</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span> <span class=n>padding</span><span class=o>=</span><span class=s1>&#39;same&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                             <span class=n>kernel_initializer</span><span class=o>=</span><span class=n>initializer</span><span class=p>,</span> <span class=n>use_bias</span><span class=o>=</span><span class=kc>False</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=n>apply_batchnorm</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>BatchNormalization</span><span class=p>())</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>LeakyReLU</span><span class=p>())</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>result</span>
-</span></span></code></pre></div><p>Upsampling is the process of inserting zero-valued samples between original samples to increase the sampling rate. (This is sometimes called “zero-stuffing”.) This kind of upsampling adds undesired spectral images to the original signal, which are centered on multiples of the original sampling rate</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>upsample</span><span class=p>(</span><span class=n>filters</span><span class=p>,</span> <span class=n>size</span><span class=p>,</span> <span class=n>apply_dropout</span><span class=o>=</span><span class=kc>False</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=n>initializer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>random_normal_initializer</span><span class=p>(</span><span class=mf>0.</span><span class=p>,</span> <span class=mf>0.02</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>result</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>Sequential</span><span class=p>()</span>
-</span></span><span class=line><span class=cl>  <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span>
-</span></span><span class=line><span class=cl>    <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Conv2DTranspose</span><span class=p>(</span><span class=n>filters</span><span class=p>,</span> <span class=n>size</span><span class=p>,</span> <span class=n>strides</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                    <span class=n>padding</span><span class=o>=</span><span class=s1>&#39;same&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                    <span class=n>kernel_initializer</span><span class=o>=</span><span class=n>initializer</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                    <span class=n>use_bias</span><span class=o>=</span><span class=kc>False</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>BatchNormalization</span><span class=p>())</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=n>apply_dropout</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Dropout</span><span class=p>(</span><span class=mf>0.5</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>result</span><span class=o>.</span><span class=n>add</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>ReLU</span><span class=p>())</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>result</span>
-</span></span></code></pre></div><h4 id=loss-functions>Loss Functions</h4><p>GANs try to replicate a probability distribution. They should therefore use loss functions that reflect the distance between the distribution of the data generated by the GAN and the distribution of the real data.</p><h6 id=generator-loss>Generator Loss</h6><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>LAMBDA</span> <span class=o>=</span> <span class=mi>100</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=n>loss_object</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>losses</span><span class=o>.</span><span class=n>BinaryCrossentropy</span><span class=p>(</span><span class=n>from_logits</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>generator_loss</span><span class=p>(</span><span class=n>disc_generated_output</span><span class=p>,</span> <span class=n>gen_output</span><span class=p>,</span> <span class=n>target</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=n>gan_loss</span> <span class=o>=</span> <span class=n>loss_object</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>ones_like</span><span class=p>(</span><span class=n>disc_generated_output</span><span class=p>),</span> <span class=n>disc_generated_output</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=c1># mean absolute error</span>
-</span></span><span class=line><span class=cl>  <span class=n>l1_loss</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>reduce_mean</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>abs</span><span class=p>(</span><span class=n>target</span> <span class=o>-</span> <span class=n>gen_output</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>total_gen_loss</span> <span class=o>=</span> <span class=n>gan_loss</span> <span class=o>+</span> <span class=p>(</span><span class=n>LAMBDA</span> <span class=o>*</span> <span class=n>l1_loss</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>total_gen_loss</span><span class=p>,</span> <span class=n>gan_loss</span><span class=p>,</span> <span class=n>l1_loss</span>
-</span></span></code></pre></div><h6 id=discriminator-loss>Discriminator Loss</h6><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>discriminator_loss</span><span class=p>(</span><span class=n>disc_real_output</span><span class=p>,</span> <span class=n>disc_generated_output</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=n>real_loss</span> <span class=o>=</span> <span class=n>loss_object</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>ones_like</span><span class=p>(</span><span class=n>disc_real_output</span><span class=p>),</span> <span class=n>disc_real_output</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>generated_loss</span> <span class=o>=</span> <span class=n>loss_object</span><span class=p>(</span><span class=n>tf</span><span class=o>.</span><span class=n>zeros_like</span><span class=p>(</span><span class=n>disc_generated_output</span><span class=p>),</span> <span class=n>disc_generated_output</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>total_disc_loss</span> <span class=o>=</span> <span class=n>real_loss</span> <span class=o>+</span> <span class=n>generated_loss</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>total_disc_loss</span>
-</span></span></code></pre></div><h4 id=the-generator-model>The Generator Model</h4><p>The Generator Model generates new images by taking a fixed size random noise as an input. Generated images are then fed to the Discriminator Model.</p><p>The main goal of the Generator is to fool the Discriminator by generating images that look like real images and thus makes it harder for the Discriminator to classify images as real or fake.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>Generator</span><span class=p>():</span>
-</span></span><span class=line><span class=cl>  <span class=n>inputs</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Input</span><span class=p>((</span><span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>3</span><span class=p>))</span>
-</span></span><span class=line><span class=cl>  <span class=nb>print</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>down_stack</span> <span class=o>=</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>128</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>apply_batchnorm</span><span class=o>=</span><span class=kc>False</span><span class=p>),</span>
-</span></span><span class=line><span class=cl>    <span class=c1>#downsample(64, 4, apply_batchnorm=False),  # (bs, 128, 128, 64)</span>
-</span></span><span class=line><span class=cl>    <span class=c1>#downsample(128, 4),  # (bs, 64, 64, 128)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>256</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 32, 32, 256)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 16, 16, 512)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 8, 8, 512)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 4, 4, 512)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 2, 2, 512)</span>
-</span></span><span class=line><span class=cl>    <span class=n>downsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 1, 1, 512)</span>
-</span></span><span class=line><span class=cl>  <span class=p>]</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>up_stack</span> <span class=o>=</span> <span class=p>[</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>apply_dropout</span><span class=o>=</span><span class=kc>True</span><span class=p>),</span>  <span class=c1># (bs, 2, 2, 1024)</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span> <span class=c1>#apply_dropout=True),  # (bs, 4, 4, 1024)</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span> <span class=c1>#apply_dropout=True),  # (bs, 8, 8, 1024)</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 16, 16, 1024)</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>256</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 32, 32, 512)</span>
-</span></span><span class=line><span class=cl>    <span class=n>upsample</span><span class=p>(</span><span class=mi>128</span><span class=p>,</span> <span class=mi>4</span><span class=p>),</span>  <span class=c1># (bs, 64, 64, 256)</span>
-</span></span><span class=line><span class=cl>    <span class=c1>#upsample(64, 4),  # (bs, 128, 128, 128)</span>
-</span></span><span class=line><span class=cl>    <span class=c1>#upsample(64, 4)</span>
-</span></span><span class=line><span class=cl>  <span class=p>]</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>initializer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>random_normal_initializer</span><span class=p>(</span><span class=mf>0.</span><span class=p>,</span> <span class=mf>0.02</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>last</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Conv2DTranspose</span><span class=p>(</span><span class=n>OUTPUT_CHANNELS</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                         <span class=n>strides</span><span class=o>=</span><span class=mi>2</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                         <span class=n>padding</span><span class=o>=</span><span class=s1>&#39;same&#39;</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                         <span class=n>kernel_initializer</span><span class=o>=</span><span class=n>initializer</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                         <span class=n>activation</span><span class=o>=</span><span class=s1>&#39;tanh&#39;</span><span class=p>)</span>  <span class=c1># (bs, 256, 256, 3)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>x</span> <span class=o>=</span> <span class=n>inputs</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=c1># Downsampling through the model</span>
-</span></span><span class=line><span class=cl>  <span class=n>skips</span> <span class=o>=</span> <span class=p>[]</span>
-</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>down</span> <span class=ow>in</span> <span class=n>down_stack</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>down</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>skips</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>skips</span> <span class=o>=</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>skips</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=c1># Upsampling and establishing the skip connections</span>
-</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>up</span><span class=p>,</span> <span class=n>skip</span> <span class=ow>in</span> <span class=nb>zip</span><span class=p>(</span><span class=n>up_stack</span><span class=p>,</span> <span class=n>skips</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>up</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Concatenate</span><span class=p>()([</span><span class=n>x</span><span class=p>,</span> <span class=n>skip</span><span class=p>])</span>
-</span></span><span class=line><span class=cl>  <span class=n>x</span> <span class=o>=</span> <span class=n>last</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>Model</span><span class=p>(</span><span class=n>inputs</span><span class=o>=</span><span class=n>inputs</span><span class=p>,</span> <span class=n>outputs</span><span class=o>=</span><span class=n>x</span><span class=p>)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>generator</span> <span class=o>=</span> <span class=n>Generator</span><span class=p>()</span>
-</span></span><span class=line><span class=cl><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>utils</span><span class=o>.</span><span class=n>plot_model</span><span class=p>(</span><span class=n>generator</span><span class=p>,</span> <span class=n>show_shapes</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>dpi</span><span class=o>=</span><span class=mi>64</span><span class=p>)</span>
-</span></span></code></pre></div><p><img class="img-fluid mx-auto d-block" alt=images/Gmodel.png src=https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/Gmodel.png loading=lazy width=736 height=1524></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>gen_output</span> <span class=o>=</span> <span class=n>generator</span><span class=p>(</span><span class=n>x_train_noisy_</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>tf</span><span class=o>.</span><span class=n>newaxis</span><span class=p>,</span> <span class=o>...</span><span class=p>],</span> <span class=n>training</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>imshow</span><span class=p>(</span><span class=n>gen_output</span><span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=o>...</span><span class=p>])</span>
-</span></span></code></pre></div><h4 id=the-discriminator-model>The Discriminator Model</h4><p>The Discriminator Model takes an image as an input (generated and real) and classifies it as real or fake.</p><p>Generated images come from the Generator and the real images come from the training data.</p><p>The discriminator model is the simple binary classification model.</p><p>Now, let us combine both the architectures and understand them in detail.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>Discriminator</span><span class=p>():</span>
-</span></span><span class=line><span class=cl>  <span class=n>initializer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>random_normal_initializer</span><span class=p>(</span><span class=mf>0.</span><span class=p>,</span> <span class=mf>0.02</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>inp</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Input</span><span class=p>(</span><span class=n>shape</span><span class=o>=</span><span class=p>[</span><span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=n>name</span><span class=o>=</span><span class=s1>&#39;input_image&#39;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>tar</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Input</span><span class=p>(</span><span class=n>shape</span><span class=o>=</span><span class=p>[</span><span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=n>name</span><span class=o>=</span><span class=s1>&#39;target_image&#39;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>x</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>concatenate</span><span class=p>([</span><span class=n>inp</span><span class=p>,</span> <span class=n>tar</span><span class=p>])</span>  <span class=c1># (bs, 256, 256, channels*2)</span>
-</span></span><span class=line><span class=cl>  <span class=n>down1</span> <span class=o>=</span> <span class=n>downsample</span><span class=p>(</span><span class=mi>64</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=kc>False</span><span class=p>)(</span><span class=n>x</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=c1>#down1 = downsample(64, 4, False)(down1)  # (bs, 128, 128, 64)</span>
-</span></span><span class=line><span class=cl>  <span class=c1>#down2 = downsample(128, 4)(down1)  # (bs, 64, 64, 128)</span>
-</span></span><span class=line><span class=cl>  <span class=n>down3</span> <span class=o>=</span> <span class=n>downsample</span><span class=p>(</span><span class=mi>256</span><span class=p>,</span> <span class=mi>4</span><span class=p>)(</span><span class=n>down1</span><span class=p>)</span>  <span class=c1># (bs, 32, 32, 256)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>zero_pad1</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>ZeroPadding2D</span><span class=p>()(</span><span class=n>down3</span><span class=p>)</span>  <span class=c1># (bs, 34, 34, 256)</span>
-</span></span><span class=line><span class=cl>  <span class=n>conv</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Conv2D</span><span class=p>(</span><span class=mi>512</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>strides</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                <span class=n>kernel_initializer</span><span class=o>=</span><span class=n>initializer</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                <span class=n>use_bias</span><span class=o>=</span><span class=kc>False</span><span class=p>)(</span><span class=n>zero_pad1</span><span class=p>)</span>  <span class=c1># (bs, 31, 31, 512)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>batchnorm1</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>BatchNormalization</span><span class=p>()(</span><span class=n>conv</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>leaky_relu</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>LeakyReLU</span><span class=p>()(</span><span class=n>batchnorm1</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>zero_pad2</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>ZeroPadding2D</span><span class=p>()(</span><span class=n>leaky_relu</span><span class=p>)</span>  <span class=c1># (bs, 33, 33, 512)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>last</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>layers</span><span class=o>.</span><span class=n>Conv2D</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>strides</span><span class=o>=</span><span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                <span class=n>kernel_initializer</span><span class=o>=</span><span class=n>initializer</span><span class=p>)(</span><span class=n>zero_pad2</span><span class=p>)</span>  <span class=c1># (bs, 30, 30, 1)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>Model</span><span class=p>(</span><span class=n>inputs</span><span class=o>=</span><span class=p>[</span><span class=n>inp</span><span class=p>,</span> <span class=n>tar</span><span class=p>],</span> <span class=n>outputs</span><span class=o>=</span><span class=n>last</span><span class=p>)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>discriminator</span> <span class=o>=</span> <span class=n>Discriminator</span><span class=p>()</span>
-</span></span><span class=line><span class=cl><span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>utils</span><span class=o>.</span><span class=n>plot_model</span><span class=p>(</span><span class=n>discriminator</span><span class=p>,</span> <span class=n>show_shapes</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>dpi</span><span class=o>=</span><span class=mi>64</span><span class=p>)</span>
-</span></span></code></pre></div><p><img class="img-fluid mx-auto d-block" alt=images/Dmodel.png src=https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/Dmodel.png loading=lazy width=663 height=713></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>disc_out</span> <span class=o>=</span> <span class=n>discriminator</span><span class=p>([</span><span class=n>x_train_noisy_</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>tf</span><span class=o>.</span><span class=n>newaxis</span><span class=p>,</span> <span class=o>...</span><span class=p>],</span> <span class=n>gen_output</span><span class=p>],</span> <span class=n>training</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>imshow</span><span class=p>(</span><span class=n>disc_out</span><span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=o>...</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>],</span> <span class=n>vmin</span><span class=o>=-</span><span class=mi>20</span><span class=p>,</span> <span class=n>vmax</span><span class=o>=</span><span class=mi>20</span><span class=p>,</span> <span class=n>cmap</span><span class=o>=</span><span class=s1>&#39;RdBu_r&#39;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>plt</span><span class=o>.</span><span class=n>colorbar</span><span class=p>()</span>
-</span></span></code></pre></div><h5 id=optimizers><strong>Optimizers</strong></h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>generator_optimizer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>optimizers</span><span class=o>.</span><span class=n>Adam</span><span class=p>(</span><span class=mf>2e-4</span><span class=p>,</span> <span class=n>beta_1</span><span class=o>=</span><span class=mf>0.5</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>discriminator_optimizer</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>keras</span><span class=o>.</span><span class=n>optimizers</span><span class=o>.</span><span class=n>Adam</span><span class=p>(</span><span class=mf>2e-4</span><span class=p>,</span> <span class=n>beta_1</span><span class=o>=</span><span class=mf>0.5</span><span class=p>)</span>
-</span></span></code></pre></div><h5 id=checkpoints><strong>checkpoints</strong></h5><p>Checkpoints capture the exact value of all parameters ( tf. Variable objects) used by a model. Checkpoints do not contain any description of the computation defined by the model and thus are typically only useful when source code that will use the saved parameter values is available.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>checkpoint_dir</span> <span class=o>=</span> <span class=s1>&#39;/content/drive/MyDrive/project/training_checkpoints&#39;</span>
-</span></span><span class=line><span class=cl><span class=n>checkpoint_prefix</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>checkpoint_dir</span><span class=p>,</span> <span class=s2>&#34;ckpt&#34;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=n>checkpoint</span> <span class=o>=</span> <span class=n>tf</span><span class=o>.</span><span class=n>train</span><span class=o>.</span><span class=n>Checkpoint</span><span class=p>(</span><span class=n>generator_optimizer</span><span class=o>=</span><span class=n>generator_optimizer</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                          <span class=n>discriminator_optimizer</span><span class=o>=</span><span class=n>discriminator_optimizer</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                 <span class=n>generator</span><span class=o>=</span><span class=n>generator</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                 <span class=n>discriminator</span><span class=o>=</span><span class=n>discriminator</span><span class=p>)</span>
-</span></span></code></pre></div><h5 id=generate-images>generate images</h5><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=k>def</span> <span class=nf>generate_images</span><span class=p>(</span><span class=n>model</span><span class=p>,</span> <span class=n>test_input</span><span class=p>,</span> <span class=n>tar</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=nb>print</span><span class=p>(</span><span class=mi>111</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>prediction</span> <span class=o>=</span> <span class=n>model</span><span class=p>(</span><span class=n>test_input</span><span class=p>,</span> <span class=n>training</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=nb>print</span><span class=p>(</span><span class=mi>111</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>plt</span><span class=o>.</span><span class=n>figure</span><span class=p>(</span><span class=n>figsize</span><span class=o>=</span><span class=p>(</span><span class=mi>15</span><span class=p>,</span> <span class=mi>15</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>display_list</span> <span class=o>=</span> <span class=p>[</span><span class=n>test_input</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>tar</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>prediction</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span>
-</span></span><span class=line><span class=cl>  <span class=n>title</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;Input Image&#39;</span><span class=p>,</span> <span class=s1>&#39;Ground Truth&#39;</span><span class=p>,</span> <span class=s1>&#39;Predicted Image&#39;</span><span class=p>]</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>3</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>plt</span><span class=o>.</span><span class=n>subplot</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=n>i</span><span class=o>+</span><span class=mi>1</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>plt</span><span class=o>.</span><span class=n>title</span><span class=p>(</span><span class=n>title</span><span class=p>[</span><span class=n>i</span><span class=p>])</span>
-</span></span><span class=line><span class=cl>    <span class=c1># getting the pixel values between [0, 1] to plot it.</span>
-</span></span><span class=line><span class=cl>    <span class=n>plt</span><span class=o>.</span><span class=n>imshow</span><span class=p>(</span><span class=n>display_list</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>*</span> <span class=mf>0.5</span> <span class=o>+</span> <span class=mf>0.5</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>plt</span><span class=o>.</span><span class=n>axis</span><span class=p>(</span><span class=s1>&#39;off&#39;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>plt</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>example_input</span><span class=o>=</span><span class=n>x_train_noisy_</span><span class=p>[</span><span class=mi>100</span><span class=p>:</span><span class=mi>101</span><span class=p>]</span>
-</span></span><span class=line><span class=cl><span class=n>example_target</span><span class=o>=</span><span class=n>x_train_</span><span class=p>[</span><span class=mi>100</span><span class=p>:</span><span class=mi>101</span><span class=p>]</span>
-</span></span><span class=line><span class=cl><span class=n>generate_images</span><span class=p>(</span><span class=n>generator</span><span class=p>,</span> <span class=n>example_input</span><span class=p>,</span> <span class=n>example_target</span><span class=p>)</span>
-</span></span></code></pre></div><p><img class=img-fluid alt=images/ex.png src=https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/ex.png loading=lazy width=851 height=276></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=nd>@tf</span><span class=o>.</span><span class=n>function</span>
-</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>train_step</span><span class=p>(</span><span class=n>input_image</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=n>epoch</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=k>with</span> <span class=n>tf</span><span class=o>.</span><span class=n>GradientTape</span><span class=p>()</span> <span class=k>as</span> <span class=n>gen_tape</span><span class=p>,</span> <span class=n>tf</span><span class=o>.</span><span class=n>GradientTape</span><span class=p>()</span> <span class=k>as</span> <span class=n>disc_tape</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>    <span class=n>gen_output</span> <span class=o>=</span> <span class=n>generator</span><span class=p>(</span><span class=n>input_image</span><span class=p>,</span> <span class=n>training</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=n>disc_real_output</span> <span class=o>=</span> <span class=n>discriminator</span><span class=p>([</span><span class=n>input_image</span><span class=p>,</span> <span class=n>target</span><span class=p>],</span> <span class=n>training</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>disc_generated_output</span> <span class=o>=</span> <span class=n>discriminator</span><span class=p>([</span><span class=n>input_image</span><span class=p>,</span> <span class=n>gen_output</span><span class=p>],</span> <span class=n>training</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=n>gen_total_loss</span><span class=p>,</span> <span class=n>gen_gan_loss</span><span class=p>,</span> <span class=n>gen_l1_loss</span> <span class=o>=</span> <span class=n>generator_loss</span><span class=p>(</span><span class=n>disc_generated_output</span><span class=p>,</span> <span class=n>gen_output</span><span class=p>,</span> <span class=n>target</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>disc_loss</span> <span class=o>=</span> <span class=n>discriminator_loss</span><span class=p>(</span><span class=n>disc_real_output</span><span class=p>,</span> <span class=n>disc_generated_output</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>generator_gradients</span> <span class=o>=</span> <span class=n>gen_tape</span><span class=o>.</span><span class=n>gradient</span><span class=p>(</span><span class=n>gen_total_loss</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                          <span class=n>generator</span><span class=o>.</span><span class=n>trainable_variables</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>  <span class=n>discriminator_gradients</span> <span class=o>=</span> <span class=n>disc_tape</span><span class=o>.</span><span class=n>gradient</span><span class=p>(</span><span class=n>disc_loss</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                               <span class=n>discriminator</span><span class=o>.</span><span class=n>trainable_variables</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=n>generator_optimizer</span><span class=o>.</span><span class=n>apply_gradients</span><span class=p>(</span><span class=nb>zip</span><span class=p>(</span><span class=n>generator_gradients</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                          <span class=n>generator</span><span class=o>.</span><span class=n>trainable_variables</span><span class=p>))</span>
-</span></span><span class=line><span class=cl>  <span class=n>discriminator_optimizer</span><span class=o>.</span><span class=n>apply_gradients</span><span class=p>(</span><span class=nb>zip</span><span class=p>(</span><span class=n>discriminator_gradients</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                              <span class=n>discriminator</span><span class=o>.</span><span class=n>trainable_variables</span><span class=p>))</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>  <span class=k>with</span> <span class=n>summary_writer</span><span class=o>.</span><span class=n>as_default</span><span class=p>():</span>
-</span></span><span class=line><span class=cl>    <span class=n>tf</span><span class=o>.</span><span class=n>summary</span><span class=o>.</span><span class=n>scalar</span><span class=p>(</span><span class=s1>&#39;gen_total_loss&#39;</span><span class=p>,</span> <span class=n>gen_total_loss</span><span class=p>,</span> <span class=n>step</span><span class=o>=</span><span class=n>epoch</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>tf</span><span class=o>.</span><span class=n>summary</span><span class=o>.</span><span class=n>scalar</span><span class=p>(</span><span class=s1>&#39;gen_gan_loss&#39;</span><span class=p>,</span> <span class=n>gen_gan_loss</span><span class=p>,</span> <span class=n>step</span><span class=o>=</span><span class=n>epoch</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>tf</span><span class=o>.</span><span class=n>summary</span><span class=o>.</span><span class=n>scalar</span><span class=p>(</span><span class=s1>&#39;gen_l1_loss&#39;</span><span class=p>,</span> <span class=n>gen_l1_loss</span><span class=p>,</span> <span class=n>step</span><span class=o>=</span><span class=n>epoch</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=n>tf</span><span class=o>.</span><span class=n>summary</span><span class=o>.</span><span class=n>scalar</span><span class=p>(</span><span class=s1>&#39;disc_loss&#39;</span><span class=p>,</span> <span class=n>disc_loss</span><span class=p>,</span> <span class=n>step</span><span class=o>=</span><span class=n>epoch</span><span class=p>)</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=n>lenl</span><span class=o>=</span><span class=nb>len</span><span class=p>(</span><span class=n>x_test</span><span class=p>)</span>
-</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>fitt</span><span class=p>(</span><span class=n>x_train_</span><span class=p>,</span><span class=n>x_train_noisy_</span><span class=p>,</span> <span class=n>epochs</span><span class=p>,</span> <span class=n>x_test</span><span class=p>,</span><span class=n>x_test_noisy</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>  <span class=n>k</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>  <span class=k>for</span> <span class=n>epoch</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>epochs</span><span class=p>):</span>
-</span></span><span class=line><span class=cl>    <span class=n>start</span> <span class=o>=</span> <span class=n>time</span><span class=o>.</span><span class=n>time</span><span class=p>()</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=n>display</span><span class=o>.</span><span class=n>clear_output</span><span class=p>(</span><span class=n>wait</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=c1>#lenl=len(x_test)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=n>example_input</span><span class=o>=</span><span class=n>x_test_noisy</span><span class=p>[</span><span class=n>k</span><span class=p>:</span><span class=n>k</span><span class=o>+</span><span class=mi>1</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>    <span class=n>example_target</span><span class=o>=</span><span class=n>x_test</span><span class=p>[</span><span class=n>k</span><span class=p>:</span><span class=n>k</span><span class=o>+</span><span class=mi>1</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>    <span class=n>generate_images</span><span class=p>(</span><span class=n>generator</span><span class=p>,</span> <span class=n>example_input</span><span class=p>,</span> <span class=n>example_target</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>k</span><span class=o>==</span><span class=n>lenl</span><span class=o>-</span><span class=mi>2</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=n>k</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>    <span class=n>k</span><span class=o>+=</span><span class=mi>1</span>
-</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;Epoch: &#34;</span><span class=p>,</span> <span class=n>epoch</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=c1># Train</span>
-</span></span><span class=line><span class=cl>    <span class=n>n</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>x_train_</span><span class=p>)):</span>
-</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=n>n</span><span class=o>+</span><span class=mi>1</span><span class=p>)</span> <span class=o>%</span> <span class=mi>100</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;.&#39;</span><span class=p>,</span> <span class=n>end</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>        <span class=n>s</span><span class=o>+=</span><span class=mi>1</span>
-</span></span><span class=line><span class=cl>        <span class=n>n</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=n>s</span><span class=o>==</span><span class=mi>100</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>()</span>
-</span></span><span class=line><span class=cl>        <span class=n>s</span><span class=o>=</span><span class=mi>0</span>
-</span></span><span class=line><span class=cl>      <span class=n>input_image</span><span class=o>=</span><span class=n>x_train_noisy_</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span><span class=o>+</span><span class=mi>1</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>      <span class=n>target</span><span class=o>=</span><span class=n>x_train_</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span><span class=o>+</span><span class=mi>1</span><span class=p>]</span>
-</span></span><span class=line><span class=cl>      <span class=n>train_step</span><span class=p>(</span><span class=n>input_image</span><span class=p>,</span> <span class=n>target</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
-</span></span><span class=line><span class=cl>      <span class=n>n</span><span class=o>+=</span><span class=mi>1</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=s1>&#39;&#39;&#39;for n, (input_image, target) in train_ds.enumerate():
-</span></span></span><span class=line><span class=cl><span class=s1>      print(&#39;.&#39;, end=&#39;&#39;)
-</span></span></span><span class=line><span class=cl><span class=s1>      if (n+1) % 100 == 0:
-</span></span></span><span class=line><span class=cl><span class=s1>        print()
-</span></span></span><span class=line><span class=cl><span class=s1>      train_step(input_image, target, epoch)&#39;&#39;&#39;</span>
-</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>()</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=c1># saving (checkpoint) the model every 20 epochs</span>
-</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>epoch</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span> <span class=o>%</span> <span class=mi>3</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
-</span></span><span class=line><span class=cl>      <span class=err>!</span><span class=n>rm</span> <span class=o>-</span><span class=n>Rf</span> <span class=o>/</span><span class=n>content</span><span class=o>/</span><span class=n>drive</span><span class=o>/</span><span class=n>MyDrive</span><span class=o>/</span><span class=n>project</span><span class=o>/</span><span class=n>training_checkpoints</span><span class=o>/</span><span class=n>ckpt</span><span class=o>-*</span>
-</span></span><span class=line><span class=cl>      <span class=n>checkpoint</span><span class=o>.</span><span class=n>save</span><span class=p>(</span><span class=n>file_prefix</span><span class=o>=</span><span class=n>checkpoint_prefix</span><span class=p>)</span>
-</span></span><span class=line><span class=cl> 
-</span></span><span class=line><span class=cl>    <span class=nb>print</span> <span class=p>(</span><span class=s1>&#39;Time taken for epoch </span><span class=si>{}</span><span class=s1> is </span><span class=si>{}</span><span class=s1> sec</span><span class=se>\n</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>epoch</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span>
-</span></span><span class=line><span class=cl>                                                        <span class=n>time</span><span class=o>.</span><span class=n>time</span><span class=p>()</span><span class=o>-</span><span class=n>start</span><span class=p>))</span>
-</span></span><span class=line><span class=cl>  <span class=n>checkpoint</span><span class=o>.</span><span class=n>save</span><span class=p>(</span><span class=n>file_prefix</span><span class=o>=</span><span class=n>checkpoint_prefix</span><span class=p>)</span>
-</span></span></code></pre></div><p><img class=img-fluid alt=images/final.png src=https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/final.png loading=lazy width=851 height=276>
-Source <a href=files/image_restoration_for_medical_field_images.ipynb>imageRestorationUsingGans.ipynb</a></p><hr><h5 align=center id=thanks-for-reading>Thanks for reading!</h5></div><hr><div class="post-navs d-flex mb-3 justify-content-evenly"><div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
-<a href=https://0x4ka5h.github.io/posts/2048withpython/>2048 With Python</a></div><div class="post-nav post-next"><a href=https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/>Image Restoration Using GAN's Part-1</a>
-<i class="fas fa-fw fa-chevron-right"></i></div></div><section class=related-posts-wrapper><h3>Related Posts</h3><ul class=related-posts><li><a href=https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/>Image Restoration Using GAN's Part-1</a></li><li><a href=https://0x4ka5h.github.io/posts/2048withpython/>2048 With Python</a></li><li><a href=https://0x4ka5h.github.io/posts/simplevideocallapp/>A Simple Video Call App With Python Sockets</a></li></ul></section></div></article></div></div><aside class="col-lg-4 sidebar d-flex"><div class=container><section class="card row text-center profile component"><div class=card-body><div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Akash Thota" src=https://0x4ka5h.github.io/images/me.jpg loading=lazy></div><div class="col-12 profile-meta"><div class=profile-name>Akash Thota</div><div class=profile-bio>Intrested about WEB 3.0 and Block Chain technologies</div><div class=profile-company><i class="fas fa-fw fa-building"></i> ...</div><br><div class=profile-location><i class="fas fa-fw fa-map-marker-alt"></i> India</div><br><div class=profile-about><i class="fas fa-fw fa-user"></i><a href=https://0x4ka5h.github.io/about/> About Me</a></div><br></div></div></section><section class="recent-posts row card component"><div class=card-body><h2 class=card-title>Recent Posts</h2><ul><li><a href=https://0x4ka5h.github.io/posts/movectf-2022/>MoveCTF 2022</a></li><li><a href=https://0x4ka5h.github.io/posts/ethernaut/>The Ethernaut</a></li><li><a href=https://0x4ka5h.github.io/posts/csaw_quals_2022/>CSAW Quals 2022</a></li><li><a href=https://0x4ka5h.github.io/posts/invaderctf-writeups/>InvaderCTF Writeups</a></li><li><a href=https://0x4ka5h.github.io/posts/depthestimationofapothole/>Depth Estimation of a Pothole on Roads</a></li></ul></div></section><section class="taxonomies row card component"><div class=card-body><h2 class=card-title><a href=https://0x4ka5h.github.io/categories>Categories</a></h2><div><a href=https://0x4ka5h.github.io/categories/ctf/ class="badge bg-primary text-white rounded post-taxonomy" title=CTF>CTF
-</a><a href=https://0x4ka5h.github.io/categories/security/ class="badge bg-primary text-white rounded post-taxonomy" title=Security>Security
-</a><a href=https://0x4ka5h.github.io/categories/gans/ class="badge bg-primary text-white rounded post-taxonomy" title="GAN's">GAN's
-</a><a href=https://0x4ka5h.github.io/categories/smart-contract/ class="badge bg-primary text-white rounded post-taxonomy" title="Smart Contract">Smart Contract
-</a><a href=https://0x4ka5h.github.io/categories/web3/ class="badge bg-primary text-white rounded post-taxonomy" title=Web3>Web3
-</a><a href=https://0x4ka5h.github.io/categories/writeups/ class="badge bg-primary text-white rounded post-taxonomy" title=WriteUps>WriteUps
-</a><a href=https://0x4ka5h.github.io/categories/computer-vision/ class="badge bg-primary text-white rounded post-taxonomy" title="Computer Vision">Computer Vision
-</a><a href=https://0x4ka5h.github.io/categories/ethernaut/ class="badge bg-primary text-white rounded post-taxonomy" title=Ethernaut>Ethernaut
-</a><a href=https://0x4ka5h.github.io/categories/fpga/ class="badge bg-primary text-white rounded post-taxonomy" title=FPGA>FPGA
-</a><a href=https://0x4ka5h.github.io/categories/game/ class="badge bg-primary text-white rounded post-taxonomy" title=Game>Game</a></div></div></section><section class="taxonomies row card component"><div class=card-body><h2 class=card-title><a href=https://0x4ka5h.github.io/tags>Tags</a></h2><div><a href=https://0x4ka5h.github.io/tags/image-processing/ class="badge bg-primary text-white rounded post-taxonomy" title="Image Processing">Image Processing
-</a><a href=https://0x4ka5h.github.io/tags/deep-learning/ class="badge bg-primary text-white rounded post-taxonomy" title="Deep Learning">Deep Learning
-</a><a href=https://0x4ka5h.github.io/tags/machine-learning/ class="badge bg-primary text-white rounded post-taxonomy" title="Machine Learning">Machine Learning
-</a><a href=https://0x4ka5h.github.io/tags/misc/ class="badge bg-primary text-white rounded post-taxonomy" title=Misc>Misc
-</a><a href=https://0x4ka5h.github.io/tags/crypto/ class="badge bg-primary text-white rounded post-taxonomy" title=Crypto>Crypto
-</a><a href=https://0x4ka5h.github.io/tags/de10nano/ class="badge bg-primary text-white rounded post-taxonomy" title=DE10Nano>DE10Nano
-</a><a href=https://0x4ka5h.github.io/tags/face-detection/ class="badge bg-primary text-white rounded post-taxonomy" title="Face Detection">Face Detection
-</a><a href=https://0x4ka5h.github.io/tags/imageprocessing/ class="badge bg-primary text-white rounded post-taxonomy" title=ImageProcessing>ImageProcessing
-</a><a href=https://0x4ka5h.github.io/tags/nodemcu/ class="badge bg-primary text-white rounded post-taxonomy" title=NodeMCU>NodeMCU
-</a><a href=https://0x4ka5h.github.io/tags/opencv/ class="badge bg-primary text-white rounded post-taxonomy" title=openCV>openCV</a></div></div></section></div></aside></div></main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><a class="nav-link social-link" target=_blank href=https://discord.com/invite/0x4ka5h title=Discord rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-discord"></i>
-</a><a class="nav-link social-link" href=mailto:0x4ka5h@gmail.com title=Email><i class="fas fa-fw fa-2x fa-envelope"></i>
-</a><a class="nav-link social-link" target=_blank href=https://github.com/0x4ka5h title=GitHub rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-github"></i>
-</a><a class="nav-link social-link" target=_blank href=https://linkedin.com/in/0x4ka5h title=LinkedIn rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-linkedin-in"></i>
-</a><a class="nav-link social-link" target=_blank href=https://twitter.com/0x4ka5h title=Twitter rel="noopener noreferrer"><i class="fa-fw fa-2x fab fa-twitter"></i></a></nav><div class="copyright mb-2">Copyright © 2018-2022 Akash Thota. All Rights Reserved.</div></footer><script src=https://0x4ka5h.github.io/js/bundle.min.dfff1fab09c570894e719d1447ee731c8bb5a1e57e18d45beff274823da322f0.js integrity="sha256-3/8fqwnFcIlOcZ0UR+5zHIu1oeV+GNRb7/J0gj2jIvA=" crossorigin=anonymous defer></script><script defer src=https://0x4ka5h.github.io/js/viewer.min.2b366f6cb186c9ce6e41936589e36005bc87d36452602e9aea75f196009e8b95.js integrity="sha256-KzZvbLGGyc5uQZNlieNgBbyH02RSYC6a6nXxlgCei5U=" crossorigin=anonymous></script><script defer src=https://0x4ka5h.github.io/js/katex.min.affcdb0c3de1260e0074ae86bffee9280f85eb73debefdce021e5d030c262a17.js integrity="sha256-r/zbDD3hJg4AdK6Gv/7pKA+F63Pevv3OAh5dAwwmKhc=" crossorigin=anonymous></script>
-<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-213801925-1","auto"),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
+<!doctype html><html lang="en"
+   data-mode="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Image Restoration Using GAN&#39;s Part-2 | 0x4ka5h&#39;s Blog</title><link rel="apple-touch-icon" href="https://0x4ka5h.github.io/images/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="https://0x4ka5h.github.io/images/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="https://0x4ka5h.github.io/images/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="https://0x4ka5h.github.io/images/favicons/manifest.json">
+<link rel="icon" href="https://0x4ka5h.github.io/images/favicons/favicon.ico">
+<meta name="keywords" content="" />
+<meta name="description" content="Image Restoration with GAN&#39;s for medical field problems" />
+
+<meta itemprop="name" content="Image Restoration Using GAN&#39;s Part-2">
+<meta itemprop="description" content="Image Restoration with GAN&#39;s for medical field problems"><meta itemprop="datePublished" content="2020-09-06T07:34:48+08:30" />
+<meta itemprop="dateModified" content="2020-09-06T07:34:48+08:30" />
+<meta itemprop="wordCount" content="1281"><meta itemprop="image" content='https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png'>
+<meta itemprop="keywords" content="Machine Learning,Deep Learning,Image Processing," /><meta property="og:title" content="Image Restoration Using GAN&#39;s Part-2" />
+<meta property="og:description" content="Image Restoration with GAN&#39;s for medical field problems" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/" /><meta property="og:image" content='https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png' /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-09-06T07:34:48+08:30" />
+<meta property="article:modified_time" content="2020-09-06T07:34:48+08:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:image" content='https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/_card.png'/>
+
+<meta name="twitter:title" content="Image Restoration Using GAN&#39;s Part-2"/>
+<meta name="twitter:description" content="Image Restoration with GAN&#39;s for medical field problems"/>
+<meta name="twitter:site" content="@0x4ka5h"/>
+<link rel="preload" href="https://0x4ka5h.github.io/css/bundle.min.fcd024e77e7ca8dc30926e1b5389582b45bdb44482ee20d1ae3aae2c00de9817.css" integrity="sha256-/NAk5358qNwwkm4bU4lYK0W9tESC7iDRrjquLADemBc=" crossorigin="anonymous" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://0x4ka5h.github.io/css/bundle.min.fcd024e77e7ca8dc30926e1b5389582b45bdb44482ee20d1ae3aae2c00de9817.css" integrity="sha256-/NAk5358qNwwkm4bU4lYK0W9tESC7iDRrjquLADemBc=" crossorigin="anonymous"></noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Consolas" type="text/css" media="all" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code" type="text/css" media="all" />
+<style>
+ body { font-family: 'Consolas'; }
+ code { font-family: 'Fira Code'; }
+ code { tab-size: 4; }
+</style></head>
+  <body><script src="https://0x4ka5h.github.io/js/bootstrap.min.062c2e66b557cb779d59cedff7e0cc76e84beb665a1076e474e87d940be44245.js" integrity="sha256-BiwuZrVXy3edWc7f9&#43;DMduhL62ZaEHbkdOh9lAvkQkU=" crossorigin="anonymous"></script><header><nav class="navbar top-app-bar top-app-bar-expand-lg fixed-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button><a class="navbar-brand me-3" href="https://0x4ka5h.github.io/">0x4ka5h&#39;s Blog
+    </a>
+    <button class="navbar-social-share" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSocialShare"
+  aria-controls="offcanvasSocialShare" aria-label="Toggle social share">
+  <i class="fas fa-share-alt"></i>
+</button>
+
+<div class="offcanvas offcanvas-bottom surface" tabindex="-1" id="offcanvasSocialShare" aria-labelledby="offcanvasSocialShare">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Share</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Twitter Share Button"
+      target="_blank" href="https://twitter.com/intent/tweet?title=Image%20Restoration%20Using%20GAN%27s%20Part-2&url=https%3a%2f%2f0x4ka5h.github.io%2fposts%2fimagerestorationusinggans_2%2f">
+      <i class="fab fa-fw fa-twitter"></i> Twitter
+    </a>
+    <a class="btn btn-sm btn-outline-primary social-share-button" rel="noopener noreferrer" aria-label="Facebook Share Button"
+      target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2f0x4ka5h.github.io%2fposts%2fimagerestorationusinggans_2%2f">
+      <i class="fab fa-fw fa-facebook-f"></i> Facebook
+    </a>
+  </div>
+</div>
+    <button class="navbar-settings" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
+  aria-controls="offcanvasSettings" aria-label="Toggle settings">
+  <i class="fas fa-ellipsis-v"></i>
+</button>
+
+<div class="offcanvas offcanvas-end surface h-100" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettings">
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title">Settings</h3>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-dismiss="offcanvas" aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body">
+
+
+
+<section class="setting">
+  <form class="font-size-switcher-form row">
+    <div class="col-auto">
+      <label for="fontSize" class="form-label"><i class="fas fa-fw fa-font"></i> Font Size</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <input type="range" class="form-range" min="-2" max="2" id="fontSize">
+    </div>
+  </form>
+</section>
+
+
+<section class="setting palettes">
+  <form class="row">
+    <div class="col-auto">
+      <label><i class="fas fa-fw fa-palette"></i> Palette</label>
+    </div>
+    <div class="col-auto ms-auto">
+      <a id="btnPalette" class="btn btn-sm btn-outline-primary" role="button" aria-label="palettePicker">
+        <i class="fas fa-eye-dropper"></i>
+      </a>
+    </div>
+  </form>
+  <div class="mt-2 d-flex visually-hidden" id="palettePicker"><button type="button" id="palette-blue" aria-label="Blue"
+        class="btn btn-sm palette" data-palette="blue">
+      </button><button type="button" id="palette-blue-gray" aria-label="Blue Gray"
+        class="btn btn-sm palette" data-palette="blue-gray">
+      </button><button type="button" id="palette-brown" aria-label="Brown"
+        class="btn btn-sm palette" data-palette="brown">
+      </button><button type="button" id="palette-cyan" aria-label="Cyan"
+        class="btn btn-sm palette" data-palette="cyan">
+      </button><button type="button" id="palette-green" aria-label="Green"
+        class="btn btn-sm palette" data-palette="green">
+      </button><button type="button" id="palette-indigo" aria-label="Indigo"
+        class="btn btn-sm palette" data-palette="indigo">
+      </button><button type="button" id="palette-orange" aria-label="Orange"
+        class="btn btn-sm palette" data-palette="orange">
+      </button><button type="button" id="palette-pink" aria-label="Pink"
+        class="btn btn-sm palette" data-palette="pink">
+      </button><button type="button" id="palette-purple" aria-label="Purple"
+        class="btn btn-sm palette" data-palette="purple">
+      </button><button type="button" id="palette-red" aria-label="Red"
+        class="btn btn-sm palette" data-palette="red">
+      </button><button type="button" id="palette-teal" aria-label="Teal"
+        class="btn btn-sm palette" data-palette="teal">
+      </button><button type="button" id="palette-yellow" aria-label="Yellow"
+        class="btn btn-sm palette" data-palette="yellow">
+      </button></div>
+</section>
+</div>
+</div>
+
+    <div class="collapse navbar-collapse" tabindex="-1" id="navbarSupportedContent" aria-labelledby="navbarSupportedContent">
+      
+      <ul class="navbar-nav ms-auto"><li class="nav-item">
+          <a class="nav-link" href="https://0x4ka5h.github.io/archives/">
+            <i class="fas fa-fw fa-file-archive"></i>Archives
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://0x4ka5h.github.io/categories/">
+            <i class="fas fa-fw fa-folder"></i>Categories
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://0x4ka5h.github.io/tags/">
+            <i class="fas fa-fw fa-tags"></i>Tags
+          </a>
+        </li><li class="nav-item">
+          <a class="nav-link" href="https://0x4ka5h.github.io/series/">
+            <i class="fas fa-fw fa-columns"></i>Series
+          </a>
+        </li></ul>
+    </div>
+  </div>
+</nav>
+</header>
+<main role="main" class="container">
+      <div class="row content">
+<div class="col-lg-8">
+  <div class="container"><nav class="row card component" aria-label="breadcrumb">
+  <div class="card-body">
+    <ol class="breadcrumb "><li class="breadcrumb-item"><a href="https://0x4ka5h.github.io/">Home</a></li><li class="breadcrumb-item"><a href="https://0x4ka5h.github.io/posts/">Posts</a></li><li class="breadcrumb-item active">Image Restoration Using GAN&#39;s Part-2</li></ol>
+  </div>
+</nav>    <article class="row card component mb-4 post"><div class="post-panel-wrapper">
+  <div class="d-flex flex-column component rounded post-panel">
+    
+    <a id="sidebarToggler" class="action d-none d-lg-block" role="button">
+  <i class="fas fa-fw fa-expand-alt" data-fa-transform="rotate-45"></i>
+</a>
+  
+    
+
+    
+    
+    
+    
+  </div>
+</div>
+<div class="card-body">
+        <h1 class="card-title my-3">Image Restoration Using GAN&#39;s Part-2
+</h1><div class="post-meta"><span class="post-date" title="created on">
+    <i class="fas fa-fw fa-calendar-alt"></i>Sep 6, 2020
+  </span><span class="post-reading-time" title="reading time">
+    <i class="fas fa-fw fa-coffee"></i>7 min read
+  </span><a href="https://0x4ka5h.github.io/categories/gans/" class="badge rounded-pill text-white bg-primary post-taxonomy">GAN&#39;s</a><a href="https://0x4ka5h.github.io/tags/machine-learning/" class="badge rounded-pill text-white bg-primary post-taxonomy">Machine Learning</a><a href="https://0x4ka5h.github.io/tags/deep-learning/" class="badge rounded-pill text-white bg-primary post-taxonomy">Deep Learning</a><a href="https://0x4ka5h.github.io/tags/image-processing/" class="badge rounded-pill text-white bg-primary post-taxonomy">Image Processing</a></div>
+<div class="post-content mb-3"><h2 id="lets-continue-the-part-1-_-">Lets continue the part-1 ^_^ ;)..,</h2>
+<p>We already know that what GAN&rsquo;s are and why they are used. Well, not really. GANs belong to implicit learning methods. In explicit learning models, the model learns its weights directly from the data. whereas in implicit learning, the model learns without the data directly passing through the network.  so it is reinforcement learning? Not really Hah..,!</p>
+<p>As of now,we already discussed that GAN&rsquo;s have two model, and two models are trained simultaneously by an adversarial process. A generator learns to create images that look real, while a discriminator learns to tell real images apart from fakes. See what happens in this contest of discrimination and generation, we may think while the generator is almost discriminated, so it was trained heavely but the thing is the discriminator also trained harldy to discriminate images for small mistakes also.This is why GAN&rsquo;s became intresting in Neural Networks.</p>
+<p><img class="img-fluid mx-auto d-block" alt="images/home.jpg" src="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/home.jpg" loading="lazy"
+   width="1050" height="520"
+   />
+
+</p>
+<h4 id="load-required-libraries">Load required libraries</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">image_dataset_from_directory</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">time</span>
+</span></span></code></pre></div><h4 id="loading-pickled-data-into-numpy-array">Loading pickled data into NumPy array</h4>
+<p>Load the Preprocessed Data into NumPy array which is created in Part-1. Pickled data contains preprocessed image data in array format.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Read from file.</span>
+</span></span><span class="line"><span class="cl"><span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;/../../data.pkl&#34;</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">x_train</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">x_train_noisy</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></div><h4 id="spliting-data-into-train-and-test-data">spliting Data into Train and test data</h4>
+<p>The train_test_split function allows you to break a dataset with ease while pursuing an ideal model. Also, keep in mind that your model should not be overfitting or underfitting.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+</span></span><span class="line"><span class="cl"><span class="n">x_train_</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">x_train_noisy_</span><span class="p">,</span> <span class="n">x_test_noisy</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_train_noisy</span><span class="p">,</span><span class="n">shuffle</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl"><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">64</span>
+</span></span><span class="line"><span class="cl"><span class="n">IMG_WIDTH</span> <span class="o">=</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl"><span class="n">IMG_HEIGHT</span> <span class="o">=</span> <span class="mi">256</span>
+</span></span><span class="line"><span class="cl"><span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">150</span>
+</span></span><span class="line"><span class="cl"><span class="n">OUTPUT_CHANNELS</span> <span class="o">=</span> <span class="mi">3</span>
+</span></span></code></pre></div><h2 id="implementation-of-gans">Implementation of GAN&rsquo;s</h2>
+<h5 id="upsampling-and-downsampling-of-an-image">Upsampling and Downsampling of an Image</h5>
+<p>Downsampling is the process of reducing the sampling rate of a signal. Downsample reduces the sampling rate of the input AOs by an integer factor by picking up one out of N samples. Note that no anti-aliasing filter is applied to the original data.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">downsample</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">apply_batchnorm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal_initializer</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">result</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">      <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                             <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">apply_batchnorm</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">result</span>
+</span></span></code></pre></div><p>Upsampling is the process of inserting zero-valued samples between original samples to increase the sampling rate. (This is sometimes called “zero-stuffing”.) This kind of upsampling adds undesired spectral images to the original signal, which are centered on multiples of the original sampling rate</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">upsample</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">apply_dropout</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal_initializer</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">result</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="n">apply_dropout</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">result</span>
+</span></span></code></pre></div><h4 id="loss-functions">Loss Functions</h4>
+<p>GANs try to replicate a probability distribution. They should therefore use loss functions that reflect the distance between the distribution of the data generated by the GAN and the distribution of the real data.</p>
+<h6 id="generator-loss">Generator Loss</h6>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">LAMBDA</span> <span class="o">=</span> <span class="mi">100</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">loss_object</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">BinaryCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">generator_loss</span><span class="p">(</span><span class="n">disc_generated_output</span><span class="p">,</span> <span class="n">gen_output</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">gan_loss</span> <span class="o">=</span> <span class="n">loss_object</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">disc_generated_output</span><span class="p">),</span> <span class="n">disc_generated_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="c1"># mean absolute error</span>
+</span></span><span class="line"><span class="cl">  <span class="n">l1_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">gen_output</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">total_gen_loss</span> <span class="o">=</span> <span class="n">gan_loss</span> <span class="o">+</span> <span class="p">(</span><span class="n">LAMBDA</span> <span class="o">*</span> <span class="n">l1_loss</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">total_gen_loss</span><span class="p">,</span> <span class="n">gan_loss</span><span class="p">,</span> <span class="n">l1_loss</span>
+</span></span></code></pre></div><h6 id="discriminator-loss">Discriminator Loss</h6>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">discriminator_loss</span><span class="p">(</span><span class="n">disc_real_output</span><span class="p">,</span> <span class="n">disc_generated_output</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">real_loss</span> <span class="o">=</span> <span class="n">loss_object</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">disc_real_output</span><span class="p">),</span> <span class="n">disc_real_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">generated_loss</span> <span class="o">=</span> <span class="n">loss_object</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">disc_generated_output</span><span class="p">),</span> <span class="n">disc_generated_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">total_disc_loss</span> <span class="o">=</span> <span class="n">real_loss</span> <span class="o">+</span> <span class="n">generated_loss</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">total_disc_loss</span>
+</span></span></code></pre></div><h4 id="the-generator-model">The Generator Model</h4>
+<p>The Generator Model generates new images by taking a fixed size random noise as an input. Generated images are then fed to the Discriminator Model.</p>
+<p>The main goal of the Generator is to fool the Discriminator by generating images that look like real images and thus makes it harder for the Discriminator to classify images as real or fake.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">Generator</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">  <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">down_stack</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">apply_batchnorm</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#downsample(64, 4, apply_batchnorm=False),  # (bs, 128, 128, 64)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#downsample(128, 4),  # (bs, 64, 64, 128)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 32, 32, 256)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 16, 16, 512)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 8, 8, 512)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 4, 4, 512)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 2, 2, 512)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">downsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 1, 1, 512)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">up_stack</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">apply_dropout</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>  <span class="c1"># (bs, 2, 2, 1024)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1">#apply_dropout=True),  # (bs, 4, 4, 1024)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="c1">#apply_dropout=True),  # (bs, 8, 8, 1024)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 16, 16, 1024)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 32, 32, 512)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">upsample</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># (bs, 64, 64, 256)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#upsample(64, 4),  # (bs, 128, 128, 128)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">#upsample(64, 4)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal_initializer</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">last</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span><span class="n">OUTPUT_CHANNELS</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                         <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                         <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                         <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                         <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">)</span>  <span class="c1"># (bs, 256, 256, 3)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="c1"># Downsampling through the model</span>
+</span></span><span class="line"><span class="cl">  <span class="n">skips</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="n">down</span> <span class="ow">in</span> <span class="n">down_stack</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">down</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">skips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">skips</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">skips</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="c1"># Upsampling and establishing the skip connections</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="n">up</span><span class="p">,</span> <span class="n">skip</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">up_stack</span><span class="p">,</span> <span class="n">skips</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">up</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Concatenate</span><span class="p">()([</span><span class="n">x</span><span class="p">,</span> <span class="n">skip</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">  <span class="n">x</span> <span class="o">=</span> <span class="n">last</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">generator</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_model</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">show_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+</span></span></code></pre></div><p><img class="img-fluid mx-auto d-block" alt="images/Gmodel.png" src="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/Gmodel.png" loading="lazy"
+   width="736" height="1524"
+   />
+
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">gen_output</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">x_train_noisy_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">tf</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">gen_output</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+</span></span></code></pre></div><h4 id="the-discriminator-model">The Discriminator Model</h4>
+<p>The Discriminator Model takes an image as an input (generated and real) and classifies it as real or fake.</p>
+<p>Generated images come from the Generator and the real images come from the training data.</p>
+<p>The discriminator model is the simple binary classification model.</p>
+<p>Now, let us combine both the architectures and understand them in detail.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">Discriminator</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">  <span class="n">initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal_initializer</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">inp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;input_image&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">tar</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;target_image&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">])</span>  <span class="c1"># (bs, 256, 256, channels*2)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">down1</span> <span class="o">=</span> <span class="n">downsample</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">False</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#down1 = downsample(64, 4, False)(down1)  # (bs, 128, 128, 64)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#down2 = downsample(128, 4)(down1)  # (bs, 64, 64, 128)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">down3</span> <span class="o">=</span> <span class="n">downsample</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">4</span><span class="p">)(</span><span class="n">down1</span><span class="p">)</span>  <span class="c1"># (bs, 32, 32, 256)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">zero_pad1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ZeroPadding2D</span><span class="p">()(</span><span class="n">down3</span><span class="p">)</span>  <span class="c1"># (bs, 34, 34, 256)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)(</span><span class="n">zero_pad1</span><span class="p">)</span>  <span class="c1"># (bs, 31, 31, 512)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">batchnorm1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()(</span><span class="n">conv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">leaky_relu</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">()(</span><span class="n">batchnorm1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">zero_pad2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ZeroPadding2D</span><span class="p">()(</span><span class="n">leaky_relu</span><span class="p">)</span>  <span class="c1"># (bs, 33, 33, 512)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">last</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">initializer</span><span class="p">)(</span><span class="n">zero_pad2</span><span class="p">)</span>  <span class="c1"># (bs, 30, 30, 1)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">inp</span><span class="p">,</span> <span class="n">tar</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">discriminator</span> <span class="o">=</span> <span class="n">Discriminator</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plot_model</span><span class="p">(</span><span class="n">discriminator</span><span class="p">,</span> <span class="n">show_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+</span></span></code></pre></div><p><img class="img-fluid mx-auto d-block" alt="images/Dmodel.png" src="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/Dmodel.png" loading="lazy"
+   width="663" height="713"
+   />
+
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">disc_out</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">([</span><span class="n">x_train_noisy_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">tf</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">gen_output</span><span class="p">],</span> <span class="n">training</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">disc_out</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</span></span></code></pre></div><h5 id="optimizers"><strong>Optimizers</strong></h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">generator_optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">2e-4</span><span class="p">,</span> <span class="n">beta_1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">discriminator_optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">2e-4</span><span class="p">,</span> <span class="n">beta_1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</span></span></code></pre></div><h5 id="checkpoints"><strong>checkpoints</strong></h5>
+<p>Checkpoints capture the exact value of all parameters ( tf. Variable objects) used by a model. Checkpoints do not contain any description of the computation defined by the model and thus are typically only useful when source code that will use the saved parameter values is available.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">checkpoint_dir</span> <span class="o">=</span> <span class="s1">&#39;/content/drive/MyDrive/project/training_checkpoints&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkpoint_prefix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">,</span> <span class="s2">&#34;ckpt&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">checkpoint</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Checkpoint</span><span class="p">(</span><span class="n">generator_optimizer</span><span class="o">=</span><span class="n">generator_optimizer</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                          <span class="n">discriminator_optimizer</span><span class="o">=</span><span class="n">discriminator_optimizer</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                 <span class="n">discriminator</span><span class="o">=</span><span class="n">discriminator</span><span class="p">)</span>
+</span></span></code></pre></div><h5 id="generate-images">generate images</h5>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">generate_images</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_input</span><span class="p">,</span> <span class="n">tar</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">display_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">test_input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tar</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</span></span><span class="line"><span class="cl">  <span class="n">title</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Input Image&#39;</span><span class="p">,</span> <span class="s1">&#39;Ground Truth&#39;</span><span class="p">,</span> <span class="s1">&#39;Predicted Image&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># getting the pixel values between [0, 1] to plot it.</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">display_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">example_input</span><span class="o">=</span><span class="n">x_train_noisy_</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">example_target</span><span class="o">=</span><span class="n">x_train_</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">generate_images</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">example_input</span><span class="p">,</span> <span class="n">example_target</span><span class="p">)</span>
+</span></span></code></pre></div><p><img class="img-fluid" alt="images/ex.png" src="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/ex.png" loading="lazy"
+   width="851" height="276"
+   />
+
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="n">input_image</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">gen_tape</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">disc_tape</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">gen_output</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="n">input_image</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">disc_real_output</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">([</span><span class="n">input_image</span><span class="p">,</span> <span class="n">target</span><span class="p">],</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">disc_generated_output</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">([</span><span class="n">input_image</span><span class="p">,</span> <span class="n">gen_output</span><span class="p">],</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">gen_total_loss</span><span class="p">,</span> <span class="n">gen_gan_loss</span><span class="p">,</span> <span class="n">gen_l1_loss</span> <span class="o">=</span> <span class="n">generator_loss</span><span class="p">(</span><span class="n">disc_generated_output</span><span class="p">,</span> <span class="n">gen_output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">disc_loss</span> <span class="o">=</span> <span class="n">discriminator_loss</span><span class="p">(</span><span class="n">disc_real_output</span><span class="p">,</span> <span class="n">disc_generated_output</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">generator_gradients</span> <span class="o">=</span> <span class="n">gen_tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">gen_total_loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                          <span class="n">generator</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">discriminator_gradients</span> <span class="o">=</span> <span class="n">disc_tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">disc_loss</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                               <span class="n">discriminator</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="n">generator_optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">generator_gradients</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                          <span class="n">generator</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="n">discriminator_optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">discriminator_gradients</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                              <span class="n">discriminator</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">  <span class="k">with</span> <span class="n">summary_writer</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;gen_total_loss&#39;</span><span class="p">,</span> <span class="n">gen_total_loss</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;gen_gan_loss&#39;</span><span class="p">,</span> <span class="n">gen_gan_loss</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;gen_l1_loss&#39;</span><span class="p">,</span> <span class="n">gen_l1_loss</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s1">&#39;disc_loss&#39;</span><span class="p">,</span> <span class="n">disc_loss</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">epoch</span><span class="p">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="n">lenl</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">fitt</span><span class="p">(</span><span class="n">x_train_</span><span class="p">,</span><span class="n">x_train_noisy_</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span><span class="n">x_test_noisy</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">#lenl=len(x_test)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="n">example_input</span><span class="o">=</span><span class="n">x_test_noisy</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">example_target</span><span class="o">=</span><span class="n">x_test</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">generate_images</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">example_input</span><span class="p">,</span> <span class="n">example_target</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">k</span><span class="o">==</span><span class="n">lenl</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">k</span><span class="o">+=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Epoch: &#34;</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1"># Train</span>
+</span></span><span class="line"><span class="cl">    <span class="n">n</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_train_</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="o">+=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="n">n</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="n">s</span><span class="o">==</span><span class="mi">100</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl">      <span class="n">input_image</span><span class="o">=</span><span class="n">x_train_noisy_</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">      <span class="n">target</span><span class="o">=</span><span class="n">x_train_</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">      <span class="n">train_step</span><span class="p">(</span><span class="n">input_image</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">n</span><span class="o">+=</span><span class="mi">1</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;&#39;&#39;for n, (input_image, target) in train_ds.enumerate():
+</span></span></span><span class="line"><span class="cl"><span class="s1">      print(&#39;.&#39;, end=&#39;&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">      if (n+1) % 100 == 0:
+</span></span></span><span class="line"><span class="cl"><span class="s1">        print()
+</span></span></span><span class="line"><span class="cl"><span class="s1">      train_step(input_image, target, epoch)&#39;&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1"># saving (checkpoint) the model every 20 epochs</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="err">!</span><span class="n">rm</span> <span class="o">-</span><span class="n">Rf</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">drive</span><span class="o">/</span><span class="n">MyDrive</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">training_checkpoints</span><span class="o">/</span><span class="n">ckpt</span><span class="o">-*</span>
+</span></span><span class="line"><span class="cl">      <span class="n">checkpoint</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_prefix</span><span class="o">=</span><span class="n">checkpoint_prefix</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Time taken for epoch </span><span class="si">{}</span><span class="s1"> is </span><span class="si">{}</span><span class="s1"> sec</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                        <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">  <span class="n">checkpoint</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_prefix</span><span class="o">=</span><span class="n">checkpoint_prefix</span><span class="p">)</span>
+</span></span></code></pre></div><p><img class="img-fluid" alt="images/final.png" src="https://0x4ka5h.github.io/posts/imagerestorationusinggans_2/images/final.png" loading="lazy"
+   width="851" height="276"
+   />
+
+
+Source <a href="files/image_restoration_for_medical_field_images.ipynb">imageRestorationUsingGans.ipynb</a>
+</p>
+<hr>
+<h5 align="center" id="thanks-for-reading">Thanks for reading!</h5>
+</div><hr /><div class="post-navs d-flex mb-3 justify-content-evenly">
+  <div class="post-nav post-prev"><i class="fas fa-fw fa-chevron-left"></i>
+    <a href="https://0x4ka5h.github.io/posts/2048withpython/">2048 With Python
+</a>
+  </div><div class="post-nav post-next">
+    <a href="https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/">Image Restoration Using GAN&#39;s Part-1
+</a>
+    <i class="fas fa-fw fa-chevron-right"></i>
+  </div></div><section class="related-posts-wrapper">
+    <h3>Related Posts</h3>
+    <ul class="related-posts"><li><a href="https://0x4ka5h.github.io/posts/imagrestorationusinggans_1/">Image Restoration Using GAN&#39;s Part-1
+</a></li><li><a href="https://0x4ka5h.github.io/posts/2048withpython/">2048 With Python
+</a></li><li><a href="https://0x4ka5h.github.io/posts/simplevideocallapp/">A Simple Video Call App With Python Sockets
+</a></li></ul>
+  </section></div>
+    </article></div>
+</div><aside class="col-lg-4 sidebar d-flex">
+  <div class="container">
+    
+    <section class="card row text-center profile component">
+  <div class="card-body">
+    <div class="col-12 d-flex align-items-center justify-content-center"><img class="profile-avatar rounded-circle" alt="Akash Thota" src="https://0x4ka5h.github.io/images/me.jpg" loading="lazy"
+  
+   />
+</div>
+    <div class="col-12 profile-meta"><div class="profile-name">Akash Thota</div><div class="profile-bio"> Intrested about WEB 3.0 and Block Chain technologies</div><div class="profile-company"><i class="fas fa-fw fa-building"></i> ...</div><br /><div class="profile-location"><i class="fas fa-fw fa-map-marker-alt"></i> India</div><br /><div class="profile-about"><i class="fas fa-fw fa-user"></i><a href="https://0x4ka5h.github.io/about/"> About Me</a></div><br /></div>
+  </div>
+</section>
+  <section class="recent-posts row card component">
+  <div class="card-body">
+    <h2 class="card-title">Recent Posts</h2>
+    <ul><li><a href="https://0x4ka5h.github.io/posts/csaw_quals_2022/">CSAW Quals 2022
+</a></li><li><a href="https://0x4ka5h.github.io/posts/invaderctf-writeups/">InvaderCTF Writeups
+</a></li><li><a href="https://0x4ka5h.github.io/posts/depthestimationofapothole/">Depth Estimation of a Pothole on Roads
+</a></li><li><a href="https://0x4ka5h.github.io/posts/vehicleaccidentdetectionusingfpga/">Vehicle Accident Detection Using FPGA
+</a></li><li><a href="https://0x4ka5h.github.io/posts/driverdrowsinessdetection/">Driver Drowsiness Detection
+</a></li></ul>
+  </div>
+</section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="https://0x4ka5h.github.io/categories">Categories</a>
+        </h2>
+        <div><a href="https://0x4ka5h.github.io/categories/ctf/" class="badge bg-primary text-white rounded post-taxonomy" title="CTF">
+            CTF
+          </a><a href="https://0x4ka5h.github.io/categories/gans/" class="badge bg-primary text-white rounded post-taxonomy" title="GAN&#39;s">
+            GAN&#39;s
+          </a><a href="https://0x4ka5h.github.io/categories/security/" class="badge bg-primary text-white rounded post-taxonomy" title="Security">
+            Security
+          </a><a href="https://0x4ka5h.github.io/categories/writeups/" class="badge bg-primary text-white rounded post-taxonomy" title="WriteUps">
+            WriteUps
+          </a><a href="https://0x4ka5h.github.io/categories/computer-vision/" class="badge bg-primary text-white rounded post-taxonomy" title="Computer Vision">
+            Computer Vision
+          </a><a href="https://0x4ka5h.github.io/categories/fpga/" class="badge bg-primary text-white rounded post-taxonomy" title="FPGA">
+            FPGA
+          </a><a href="https://0x4ka5h.github.io/categories/game/" class="badge bg-primary text-white rounded post-taxonomy" title="Game">
+            Game
+          </a><a href="https://0x4ka5h.github.io/categories/socket/" class="badge bg-primary text-white rounded post-taxonomy" title="Socket">
+            Socket
+          </a></div>
+      </div>
+    </section><section class="taxonomies row card component">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="https://0x4ka5h.github.io/tags">Tags</a>
+        </h2>
+        <div><a href="https://0x4ka5h.github.io/tags/image-processing/" class="badge bg-primary text-white rounded post-taxonomy" title="Image Processing">
+            Image Processing
+          </a><a href="https://0x4ka5h.github.io/tags/deep-learning/" class="badge bg-primary text-white rounded post-taxonomy" title="Deep Learning">
+            Deep Learning
+          </a><a href="https://0x4ka5h.github.io/tags/machine-learning/" class="badge bg-primary text-white rounded post-taxonomy" title="Machine Learning">
+            Machine Learning
+          </a><a href="https://0x4ka5h.github.io/tags/misc/" class="badge bg-primary text-white rounded post-taxonomy" title="Misc">
+            Misc
+          </a><a href="https://0x4ka5h.github.io/tags/crypto/" class="badge bg-primary text-white rounded post-taxonomy" title="Crypto">
+            Crypto
+          </a><a href="https://0x4ka5h.github.io/tags/de10nano/" class="badge bg-primary text-white rounded post-taxonomy" title="DE10Nano">
+            DE10Nano
+          </a><a href="https://0x4ka5h.github.io/tags/face-detection/" class="badge bg-primary text-white rounded post-taxonomy" title="Face Detection">
+            Face Detection
+          </a><a href="https://0x4ka5h.github.io/tags/imageprocessing/" class="badge bg-primary text-white rounded post-taxonomy" title="ImageProcessing">
+            ImageProcessing
+          </a><a href="https://0x4ka5h.github.io/tags/nodemcu/" class="badge bg-primary text-white rounded post-taxonomy" title="NodeMCU">
+            NodeMCU
+          </a><a href="https://0x4ka5h.github.io/tags/opencv/" class="badge bg-primary text-white rounded post-taxonomy" title="openCV">
+            openCV
+          </a></div>
+      </div>
+    </section>
+    
+  </div>
+</aside>
+</div>
+    </main><footer class="footer mt-auto py-3 text-center container"><nav class="social-links nav my-2 justify-content-center"><a class="nav-link social-link" target="_blank" href="https://discord.com/invite/0x4ka5h" title="Discord" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-discord"></i>
+      </a><a class="nav-link social-link" href="mailto:0x4ka5h@gmail.com" title="Email">
+      <i class="fas fa-fw fa-2x fa-envelope"></i>
+    </a><a class="nav-link social-link" target="_blank" href="https://github.com/0x4ka5h" title="GitHub" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-github"></i>
+      </a><a class="nav-link social-link" target="_blank" href="https://linkedin.com/in/0x4ka5h" title="LinkedIn" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-linkedin-in"></i>
+      </a><a class="nav-link social-link" target="_blank" href="https://twitter.com/0x4ka5h" title="Twitter" rel="noopener noreferrer">
+        <i class="fa-fw fa-2x fab fa-twitter"></i>
+      </a></nav>
+<div class="copyright mb-2">
+  Copyright © 2018-2022 Akash Thota. All Rights Reserved.
+</div>
+</footer>
+<script src="https://0x4ka5h.github.io/js/bundle.min.dfff1fab09c570894e719d1447ee731c8bb5a1e57e18d45beff274823da322f0.js" integrity="sha256-3/8fqwnFcIlOcZ0UR&#43;5zHIu1oeV&#43;GNRb7/J0gj2jIvA=" crossorigin="anonymous" defer></script><script defer src="https://0x4ka5h.github.io/js/viewer.min.2b366f6cb186c9ce6e41936589e36005bc87d36452602e9aea75f196009e8b95.js" integrity="sha256-KzZvbLGGyc5uQZNlieNgBbyH02RSYC6a6nXxlgCei5U=" crossorigin="anonymous"></script><script defer src="https://0x4ka5h.github.io/js/katex.min.affcdb0c3de1260e0074ae86bffee9280f85eb73debefdce021e5d030c262a17.js" integrity="sha256-r/zbDD3hJg4AdK6Gv/7pKA&#43;F63Pevv3OAh5dAwwmKhc=" crossorigin="anonymous"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-213801925-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</body>
+</html>
